@@ -29,7 +29,7 @@ $result = $statement->fetch((PDO::FETCH_ASSOC));
     <div class="card my-4 shadow-sm">
       <div class="card-header d-flex justify-content-between align-items-center">
         <h2 class="h5 mb-0">Editar cadastro</h2>
-        <a class="btn btn-sm btn-danger" href="/crud-php"><i class="bi bi-box-arrow-left"></i> Sair</a>
+        <a class="btn btn-sm btn-danger" href="/crud-php"><i class="bi bi-box-arrow-left"></i> Voltar</a>
       </div>
       <div class="card-body">
         <form action="atualizar.php?id=<?= $result['id'] ?>" method="post">
@@ -39,7 +39,7 @@ $result = $statement->fetch((PDO::FETCH_ASSOC));
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
                 <input id="nome" value="<?= $result['nome'] ?>" autocomplete="off" placeholder="Nome"
-                  class="form-control" type="text" name="nome">
+                  class="form-control" type="text" name="nome" style="text-transform: uppercase;">
               </div>
             </div>
             <div class="col-md-6">
@@ -47,10 +47,10 @@ $result = $statement->fetch((PDO::FETCH_ASSOC));
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-geo-alt-fill"></i></span>
                 <input id="endereco" value="<?= $result['endereco'] ?>" autocomplete="off" class="form-control"
-                  type="text" name="endereco">
+                  type="text" name="endereco" style="text-transform: uppercase;">
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <label class="form-label" for="telefone">Telefone</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
@@ -58,28 +58,28 @@ $result = $statement->fetch((PDO::FETCH_ASSOC));
                   type="text" name="telefone" maxlength="15" oninput="maskPhone(event)">
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <label class="form-label" for="aparelho">Aparelho</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-phone-fill"></i></span>
                 <input id="aparelho" value="<?= $result['aparelho'] ?>" autocomplete="off" class="form-control"
-                  type="text" name="aparelho">
+                  type="text" name="aparelho" style="text-transform: uppercase;">
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <label class="form-label" for="marca">Marca</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-tag-fill"></i></span>
                 <input id="marca" value="<?= $result['marca'] ?>" autocomplete="off" class="form-control" type="text"
-                  name="marca">
+                  name="marca" style="text-transform: uppercase;">
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <label class="form-label" for="modelo">Modelo</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-box-seam"></i></span>
                 <input id="modelo" value="<?= $result['modelo'] ?>" autocomplete="off" class="form-control" type="text"
-                  name="modelo">
+                  name="modelo" style="text-transform: uppercase;">
               </div>
             </div>
             <div class="col-md-4">
@@ -87,7 +87,15 @@ $result = $statement->fetch((PDO::FETCH_ASSOC));
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-exclamation-triangle-fill"></i></span>
                 <input id="defeito" value="<?= $result['defeito'] ?>" autocomplete="off" class="form-control"
-                  type="text" name="defeito">
+                  type="text" name="defeito" style="text-transform: uppercase;">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label" for="servico">Serviço Executado
+              </label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-gear"></i></span>
+                <input id="servico" value="<?= $result['servico'] ?>" autocomplete="off" class="form-control" type="text" name="servico" style="text-transform: uppercase;">
               </div>
             </div>
             <div class="col-md-4">

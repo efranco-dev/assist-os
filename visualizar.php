@@ -67,6 +67,10 @@ $result = $statement->fetch(PDO::FETCH_ASSOC);
             <span class="text-secondary"><i class="bi bi-exclamation-triangle-fill me-1"></i> Defeito:</span>
             <span class="fw-semibold"> <?= $result['defeito'] ?></span>
           </div>
+          <div class="list-group-item px-0 py-2 border-bottom">
+            <span class="text-secondary"><i class="bi bi-exclamation-triangle-fill me-1"></i> Serviço Executado:</span>
+            <span class="fw-semibold"> <?= $result['servico'] ?></span>
+          </div>
           <div class="list-group-item px-0 py-2">
             <span class="text-secondary"><i class="bi bi-chat-text-fill me-1"></i> Observações:</span>
             <span class="fw-semibold d-block mt-1"> <?= nl2br(htmlspecialchars($result['observacoes'])) ?></span>
