@@ -82,7 +82,7 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
             <div class="col-md-4">
               <label class="form-label" for="defeito">Defeito Relatado</label>
               <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-exclamation-triangle-fill"></i></span>
+                <span class="input-group-text"><i class="bi bi-bug-fill"></i></span>
                 <input id="defeito" autocomplete="off" class="form-control" type="text" name="defeito"
                   style="text-transform: uppercase;">
               </div>
@@ -91,7 +91,7 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
               <label class="form-label" for="servico">Serviço Executado
               </label>
               <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-gear"></i></span>
+                <span class="input-group-text"><i class="bi bi-hammer"></i></span>
                 <input id="servico" autocomplete="off" class="form-control" type="text" name="servico"
                   style="text-transform: uppercase;">
               </div>
@@ -105,30 +105,28 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
               </div>
             </div>
              <div class="col-md-4">
-              <label class="form-label" for="servico">Valor do Serviço
-              </label>
+              <label class="form-label" for="valor_servico">Valor do Serviço</label>
               <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-cash-coin"></i></span>
-                <input id="servico" autocomplete="off" class="form-control" type="text" name="servico"
-                  style="text-transform: uppercase;">
+                <span class="input-group-text"><i class="bi bi-cash-stack"></i></span>
+                <input id="valor_servico" autocomplete="off" class="form-control" type="text" name="valor_servico"
+                  inputmode="decimal" oninput="updateTotal()" onblur="formatCurrencyField(this)">
               </div>
             </div>
              <div class="col-md-4">
-              <label class="form-label" for="servico">Desconto
-              </label>
+              <label class="form-label" for="desconto">Desconto</label>
               <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-cash-coin"></i></i></span>
-                <input id="servico" autocomplete="off" class="form-control" type="text" name="servico"
-                  style="text-transform: uppercase;">
+                <span class="input-group-text"><i class="bi bi-percent"></i></span>
+                <input id="desconto" autocomplete="off" class="form-control" type="text" name="desconto"
+                   inputmode="decimal" oninput="updateTotal()" onblur="formatCurrencyField(this)">
               </div>
             </div>
-             <div class="col-md-4">
-              <label class="form-label" for="servico">valor Total
-              </label>
+              <div class="col-md-4">
+              <label class="form-label" for="valor_total">Valor Total</label>
               <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-cash-coin"></i></span>
-                <input id="servico" autocomplete="off" class="form-control" type="text" name="servico"
-                  style="text-transform: uppercase;">
+                <span class="input-group-text"><i class="bi bi-calculator-fill"></i></span>
+                <input id="valor_total" autocomplete="off" class="form-control" type="text" name="valor_total"
+                  value="<?= isset($result['valor_total']) ? number_format((float)$result['valor_total'], 2, ',', '.') : '' ?>"
+                   readonly>
               </div>
             </div>
           </div>
@@ -187,6 +185,42 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
       }
       e.target.value = v;
     }
+
+    function parseCurrency(value) {
+      if (!value) return 0;
+      value = value.replace(/\./g, '').replace(/,/g, '.').trim();
+      var parsed = parseFloat(value);
+      return isNaN(parsed) ? 0 : parsed;
+    }
+
+    function formatCurrency(value) {
+      return value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function formatCurrencyField(field) {
+      if (!field.value.trim()) {
+        field.value = '';
+        updateTotal();
+        return;
+      }
+      field.value = formatCurrency(parseCurrency(field.value));
+      updateTotal();
+    }
+
+    function updateTotal() {
+      var valorServicoField = document.getElementById('valor_servico');
+      var descontoField = document.getElementById('desconto');
+      var valorServico = parseCurrency(valorServicoField.value);
+      var desconto = parseCurrency(descontoField.value);
+      if (!valorServicoField.value.trim() && !descontoField.value.trim()) {
+        document.getElementById('valor_total').value = '';
+        return;
+      }
+      var total = valorServico - desconto;
+      document.getElementById('valor_total').value = formatCurrency(total >= 0 ? total : 0);
+    }
+
+    document.addEventListener('DOMContentLoaded', updateTotal);
   </script>
 </body>
 

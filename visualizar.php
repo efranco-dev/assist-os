@@ -2,10 +2,20 @@
 
 require('conexao.php');
 
-$id = filter_input(INPUT_GET, 'id', FILTER_DEFAULT);
-$sql = "SELECT * FROM `cadastro` WHERE id = $id";
-$statement = $pdo->query($sql);
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+if (!$id) {
+  header('location:/crud-php');
+  exit();
+}
+
+$sql = "SELECT * FROM `cadastro` WHERE id = :id";
+$statement = $pdo->prepare($sql);
+$statement->execute(['id' => $id]);
 $result = $statement->fetch(PDO::FETCH_ASSOC);
+if (!$result) {
+  header('location:/crud-php');
+  exit();
+}
 ?>
 
 <!doctype html>
@@ -64,16 +74,28 @@ $result = $statement->fetch(PDO::FETCH_ASSOC);
             <span class="fw-semibold"> <?= $result['modelo'] ?></span>
           </div>
           <div class="list-group-item px-0 py-2 border-bottom">
-            <span class="text-secondary"><i class="bi bi-exclamation-triangle-fill me-1"></i> Defeito:</span>
+            <span class="text-secondary"><i class="bi bi-bug-fill me-1"></i> Defeito:</span>
             <span class="fw-semibold"> <?= $result['defeito'] ?></span>
           </div>
           <div class="list-group-item px-0 py-2 border-bottom">
-            <span class="text-secondary"><i class="bi bi-exclamation-triangle-fill me-1"></i> Serviço Executado:</span>
+            <span class="text-secondary"><i class="bi bi-hammer me-1"></i> Serviço Executado:</span>
             <span class="fw-semibold"> <?= $result['servico'] ?></span>
           </div>
-          <div class="list-group-item px-0 py-2">
+          <div class="list-group-item px-0 py-2 border-bottom">
             <span class="text-secondary"><i class="bi bi-chat-text-fill me-1"></i> Observações:</span>
             <span class="fw-semibold d-block mt-1"> <?= nl2br(htmlspecialchars($result['observacoes'])) ?></span>
+          </div>
+          <div class="list-group-item px-0 py-2 border-bottom">
+            <span class="text-secondary"><i class="bi bi-cash-stack me-1"></i> Valor do Serviço:</span>
+            <span class="fw-semibold"> <?= number_format($result['valor_servico'], 2, ',', '.') ?></span>
+          </div>
+          <div class="list-group-item px-0 py-2 border-bottom">
+            <span class="text-secondary"><i class="bi bi-percent me-1"></i> Desconto:</span>
+            <span class="fw-semibold"> <?= number_format($result['desconto'], 2, ',', '.') ?></span>
+          </div>
+          <div class="list-group-item px-0 py-2 border-bottom">
+            <span class="text-secondary"><i class="bi bi-calculator-fill me-1"></i> Valor Total:</span>
+            <span class="fw-semibold"> <?= number_format($result['valor_total'], 2, ',', '.') ?></span>
           </div>
         </div>
       </div>
