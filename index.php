@@ -11,7 +11,8 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
 <html lang="pt-BR" data-bs-theme="light">
 
 <head>
-  <title>Cadastros</title>
+  <title>Assist-OS</title>
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
