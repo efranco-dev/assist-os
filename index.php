@@ -105,7 +105,7 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
                   rows="1"></textarea>
               </div>
             </div>
-             <div class="col-md-4">
+            <div class="col-md-4">
               <label class="form-label" for="valor_servico">Valor do Serviço</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-cash-stack"></i></span>
@@ -113,20 +113,20 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
                   inputmode="decimal" oninput="updateTotal()" onblur="formatCurrencyField(this)">
               </div>
             </div>
-             <div class="col-md-4">
+            <div class="col-md-4">
               <label class="form-label" for="desconto">Desconto</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-percent"></i></span>
                 <input id="desconto" autocomplete="off" class="form-control" type="text" name="desconto"
-                   inputmode="decimal" oninput="updateTotal()" onblur="formatCurrencyField(this)">
+                  inputmode="decimal" oninput="updateTotal()" onblur="formatCurrencyField(this)">
               </div>
             </div>
-              <div class="col-md-4">
+            <div class="col-md-4">
               <label class="form-label" for="valor_total">Valor Total</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-calculator-fill"></i></span>
-                <input id="valor_total" autocomplete="off" class="form-control" type="text" name="valor_total"
-                  value="" readonly>
+                <input id="valor_total" autocomplete="off" class="form-control" type="text" name="valor_total" value=""
+                  readonly>
               </div>
             </div>
           </div>
@@ -173,55 +173,8 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
     crossorigin="anonymous"></script>
-  <script>
-    function maskPhone(e) {
-      var v = e.target.value.replace(/\D/g, '');
-      if (v.length > 10) {
-        v = v.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
-      } else if (v.length > 5) {
-        v = v.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, '($1) $2-$3');
-      } else if (v.length > 2) {
-        v = v.replace(/^(\d{2})(\d{0,5})/, '($1) $2');
-      }
-      e.target.value = v;
-    }
-
-    function parseCurrency(value) {
-      if (!value) return 0;
-      value = value.replace(/\./g, '').replace(/,/g, '.').trim();
-      var parsed = parseFloat(value);
-      return isNaN(parsed) ? 0 : parsed;
-    }
-
-    function formatCurrency(value) {
-      return value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
-
-    function formatCurrencyField(field) {
-      if (!field.value.trim()) {
-        field.value = '';
-        updateTotal();
-        return;
-      }
-      field.value = formatCurrency(parseCurrency(field.value));
-      updateTotal();
-    }
-
-    function updateTotal() {
-      var valorServicoField = document.getElementById('valor_servico');
-      var descontoField = document.getElementById('desconto');
-      var valorServico = parseCurrency(valorServicoField.value);
-      var desconto = parseCurrency(descontoField.value);
-      if (!valorServicoField.value.trim() && !descontoField.value.trim()) {
-        document.getElementById('valor_total').value = '';
-        return;
-      }
-      var total = valorServico - desconto;
-      document.getElementById('valor_total').value = formatCurrency(total >= 0 ? total : 0);
-    }
-
-    document.addEventListener('DOMContentLoaded', updateTotal);
-  </script>
+  <script src="js/total-calculation.js"></script>
+  <script src="js/mask-phone.js"></script>
 </body>
 
 </html>
