@@ -38,8 +38,8 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
       </div>
       <div class="card-body">
         <form action="cadastrar.php" method="post">
-          <div class="row g-3">
-            <div class="col-md-6">
+          <div class="row g-1">
+            <div class="col-md-4">
               <label class="form-label" for="nome">Nome</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
@@ -47,11 +47,19 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
                   style="text-transform: uppercase;">
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-5">
               <label class="form-label" for="endereco">Endereço</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-geo-alt-fill"></i></span>
                 <input id="endereco" autocomplete="off" class="form-control" type="text" name="endereco"
+                  style="text-transform: uppercase;">
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label" for="bairro">Bairro</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-geo-alt-fill"></i></span>
+                <input id="bairro" autocomplete="off" class="form-control" type="text" name="bairro"
                   style="text-transform: uppercase;">
               </div>
             </div>
@@ -144,35 +152,9 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
         </form>
       </div>
     </div>
-    <hr>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Nome</th>
-          <th>Telefone</th>
-          <th>Data de Entrada</th>
-          <th>Opções</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php
-        foreach ($result as $row): ?>
-          <tr>
-            <td><?= $row['nome'] ?></td>
-            <td><?= $row['telefone'] ?></td>
-            <td><?= date('d/m/Y H:i', strtotime($row['data_entrada'])) ?></td>
-            <td class="d-flex justify-content-end gap-2">
-              <a class="btn btn-sm btn-primary" href="visualizar.php?id=<?= $row['id'] ?>"><i class="bi bi-eye-fill"></i>
-                Ver</a>
-              <a class="btn btn-sm btn-warning" href="editar.php?id=<?= $row['id'] ?>"><i class="bi bi-pencil-square"></i>
-                Editar</a>
-              <a class="btn btn-sm btn-danger" href="deletar.php?id=<?= $row['id'] ?>"><i class="bi bi-trash3-fill"></i>
-                Excluir</a>
-            </td>
-          </tr>
-        <?php endforeach ?>
-      </tbody>
-    </table>
+   
+    <a href="lista-clientes.php" class="btn btn-sm btn-outline-primary"><i class="bi bi-people-fill"></i> Ver Lista de Clientes</a>
+
   </main>
   <footer>
 

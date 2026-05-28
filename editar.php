@@ -43,8 +43,8 @@ if (!$result) {
       </div>
       <div class="card-body">
         <form action="atualizar.php?id=<?= $result['id'] ?>" method="post">
-          <div class="row g-3">
-            <div class="col-md-6">
+          <div class="row g-1">
+            <div class="col-md-4">
               <label class="form-label" for="nome">Nome</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
@@ -52,8 +52,16 @@ if (!$result) {
                   class="form-control" type="text" name="nome" style="text-transform: uppercase;">
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-5">
               <label class="form-label" for="endereco">Endereço</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-geo-alt-fill"></i></span>
+                <input id="endereco" value="<?= $result['endereco'] ?>" autocomplete="off" class="form-control"
+                  type="text" name="endereco" style="text-transform: uppercase;">
+              </div>
+            </div>
+            <div class="col-md-">
+              <label class="form-label" for="bairro">Bairro</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-geo-alt-fill"></i></span>
                 <input id="endereco" value="<?= $result['endereco'] ?>" autocomplete="off" class="form-control"
