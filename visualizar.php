@@ -60,6 +60,10 @@ if (!$result) {
                 <span class="fw-semibold"> <?= $result['endereco'] ?></span>
               </div>
               <div class="list-group-item px-0 py-2 border-bottom">
+                <span class="text-secondary"><i class="bi bi-cursor me-1"></i> Bairro:</span>
+                <span class="fw-semibold"> <?= $result['bairro'] ?></span>
+              </div>
+              <div class="list-group-item px-0 py-2 border-bottom">
                 <span class="text-secondary"><i class="bi bi-telephone-fill me-1"></i> Telefone:</span>
                 <span class="fw-semibold"> <?= $result['telefone'] ?></span>
               </div>

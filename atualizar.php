@@ -1,9 +1,10 @@
 <?php
+session_start();
 require('conexao.php');
 
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 if (!$id || $_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('location:/assist-os');
+    header('location:/assist-os/editar.php?id=' . $id);
     exit();
 }
 $nome = filter_input(INPUT_POST, 'nome', FILTER_DEFAULT);
@@ -54,7 +55,9 @@ try {
         ':valor_total' => $total,
         ':id' => $id,
     ]);
-    header('location:/assist-os');
+    $_SESSION['sucesso'] = true;
+    header('location:/assist-os/editar.php?id=' . $id);
+    exit();
 } catch (PDOException $e) {
     echo "Ops! algo deu errado: " . $e->getMessage();
     exit();

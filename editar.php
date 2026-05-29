@@ -1,9 +1,10 @@
 <?php
+session_start();
 require('conexao.php');
 
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 if (!$id) {
-  header('location:/assist-os');
+  header('location:/assist-os/');
   exit();
 }
 
@@ -12,7 +13,8 @@ $statement = $pdo->prepare($sql);
 $statement->execute(['id' => $id]);
 $result = $statement->fetch(PDO::FETCH_ASSOC);
 if (!$result) {
-  header('location:/assist-os');
+  $_SESSION['sucesso'] = true;
+  header('location:/assist-os/');
   exit();
 }
 
@@ -60,12 +62,12 @@ if (!$result) {
                   type="text" name="endereco" style="text-transform: uppercase;">
               </div>
             </div>
-            <div class="col-md-">
+            <div class="col-md-3">
               <label class="form-label" for="bairro">Bairro</label>
               <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-geo-alt-fill"></i></span>
-                <input id="endereco" value="<?= $result['endereco'] ?>" autocomplete="off" class="form-control"
-                  type="text" name="endereco" style="text-transform: uppercase;">
+                <span class="input-group-text"><i class="bi bi-cursor "></i></span>
+                <input id="bairro" value="<?= $result['bairro'] ?>" autocomplete="off" class="form-control" type="text"
+                  name="bairro" style="text-transform: uppercase;">
               </div>
             </div>
             <div class="col-md-3">
@@ -113,7 +115,8 @@ if (!$result) {
               </label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-hammer"></i></span>
-                <input id="servico" value="<?= $result['servico'] ?>" autocomplete="off" class="form-control" type="text" name="servico" style="text-transform: uppercase;">
+                <input id="servico" value="<?= $result['servico'] ?>" autocomplete="off" class="form-control"
+                  type="text" name="servico" style="text-transform: uppercase;">
               </div>
             </div>
             <div class="col-md-4">
@@ -129,7 +132,7 @@ if (!$result) {
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-cash-stack"></i></span>
                 <input id="valor_servico" autocomplete="off" class="form-control" type="text" name="valor_servico"
-                  value="<?= isset($result['valor_servico']) ? number_format((float)$result['valor_servico'], 2, ',', '.') : '' ?>"
+                  value="<?= isset($result['valor_servico']) ? number_format((float) $result['valor_servico'], 2, ',', '.') : '' ?>"
                   inputmode="decimal" oninput="updateTotal()" onblur="formatCurrencyField(this)">
               </div>
             </div>
@@ -138,8 +141,8 @@ if (!$result) {
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-percent"></i></span>
                 <input id="desconto" autocomplete="off" class="form-control" type="text" name="desconto"
-                  value="<?= isset($result['desconto']) ? number_format((float)$result['desconto'], 2, ',', '.') : '' ?>"
-                   inputmode="decimal" oninput="updateTotal()" onblur="formatCurrencyField(this)">
+                  value="<?= isset($result['desconto']) ? number_format((float) $result['desconto'], 2, ',', '.') : '' ?>"
+                  inputmode="decimal" oninput="updateTotal()" onblur="formatCurrencyField(this)">
               </div>
             </div>
             <div class="col-md-4">
@@ -147,18 +150,27 @@ if (!$result) {
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-calculator-fill"></i></span>
                 <input id="valor_total" autocomplete="off" class="form-control" type="text" name="valor_total"
-                  value="<?= isset($result['valor_total']) ? number_format((float)$result['valor_total'], 2, ',', '.') : '' ?>"
-                   readonly>
+                  value="<?= isset($result['valor_total']) ? number_format((float) $result['valor_total'], 2, ',', '.') : '' ?>"
+                  readonly>
               </div>
             </div>
           </div>
           <div class="mt-3 text-end">
             <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-arrow-counterclockwise"></i>
-              Atualizar</button>
+              Atualizar
+            </button>
           </div>
         </form>
       </div>
     </div>
+    <?php if (isset($_SESSION['sucesso']) && $_SESSION['sucesso']): ?>
+      <div id="mensagemSucesso" class="alert alert-success alert-dismissible fade show mt-3" role="alert"
+        style="background-color: #d4edda; border-color: #c3e6cb; color: #155724;">
+        <i class="bi bi-check-circle-fill"></i> Contato atualizado com sucesso!
+      </div>
+      <?php unset($_SESSION['sucesso']); ?>
+    <?php endif; ?>
+
   </main>
   <footer>
 
@@ -215,6 +227,18 @@ if (!$result) {
 
     document.addEventListener('DOMContentLoaded', updateTotal);
   </script>
-</body>
 
+  <script>
+    // Fazer a mensagem de sucesso desaparecer após 4 segundos igual ao index.php
+    const mensagem = document.getElementById('mensagemSucesso');
+    if (mensagem) {
+      setTimeout(() => {
+        mensagem.classList.remove('show');
+        setTimeout(() => {
+          mensagem.remove();
+        }, 150);
+      }, 4000);
+    }
+  </script>
+</body>
 </html>

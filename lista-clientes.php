@@ -2,10 +2,19 @@
 session_start();
 require('conexao.php');
 
-$sql = "SELECT * FROM `cadastro`";
-$statement = $pdo->query($sql);
-$result = $statement->fetchAll((PDO::FETCH_ASSOC));
+// Captura o termo de busca
+$busca = isset($_GET['busca']) ? trim($_GET['busca']) : '';
 
+if ($busca !== '') {
+    $sql = "SELECT * FROM `cadastro` WHERE nome LIKE :busca OR telefone LIKE :busca";
+    $statement = $pdo->prepare($sql);
+    $statement->execute([':busca' => "%$busca%"]);
+} else {
+    $sql = "SELECT * FROM `cadastro`";
+    $statement = $pdo->query($sql);
+}
+
+$result = $statement->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!doctype html>
@@ -16,81 +25,115 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
   <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.4/font/bootstrap-icons.css" rel="stylesheet" />
 </head>
 
 <body>
-  <header>
-  </header>
+  <header></header>
   <main class="container">
-    <?php if(isset($_SESSION['sucesso']) && $_SESSION['sucesso']): ?>
-    <div id="mensagemSucesso" class="alert alert-success alert-dismissible fade show mt-3" role="alert" style="background-color: #d4edda; border-color: #c3e6cb; color: #155724;">
+
+    <?php if (isset($_SESSION['sucesso']) && $_SESSION['sucesso']): ?>
+    <div id="mensagemSucesso" class="alert alert-success alert-dismissible fade show mt-3" role="alert">
       <i class="bi bi-check-circle-fill"></i> Contato criado com sucesso!
     </div>
     <?php unset($_SESSION['sucesso']); ?>
     <?php endif; ?>
+
     <div class="card my-4 shadow-sm">
       <div class="card-header d-flex justify-content-between align-items-center">
-        <h2 class="h5 mb-0">Editar cadastro</h2>
+        <h2 class="h5 mb-0">Lista de Clientes Cadastrados</h2>
         <a class="btn btn-sm btn-danger" href="/assist-os"><i class="bi bi-box-arrow-left"></i> Voltar</a>
       </div>
       <div class="card-body">
-        <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Nome</th>
-          <th>Telefone</th>
-          <th>Data de Entrada</th>
-          <th>Opções</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php
-        foreach ($result as $row): ?>
-          <tr>
-            <td><?= $row['nome'] ?></td>
-            <td><?= $row['telefone'] ?></td>
-            <td><?= date('d/m/Y H:i', strtotime($row['data_entrada'])) ?></td>
-            <td class="d-flex justify-content-end gap-2">
-              <a class="btn btn-sm btn-primary" href="visualizar.php?id=<?= $row['id'] ?>"><i class="bi bi-eye-fill"></i>
-                Ver</a>
-              <a class="btn btn-sm btn-warning" href="editar.php?id=<?= $row['id'] ?>"><i class="bi bi-pencil-square"></i>
-                Editar</a>
-              <a class="btn btn-sm btn-danger" href="deletar.php?id=<?= $row['id'] ?>"><i class="bi bi-trash3-fill"></i>
-                Excluir</a>
-            </td>
-          </tr>
-        <?php endforeach ?>
-      </tbody>
-    </table>
+
+        <!-- Campo de busca -->
+        <form method="GET" action="" class="mb-3">
+          <div class="input-group">
+            <input
+              type="text"
+              name="busca"
+              class="form-control"
+              placeholder="Buscar por nome ou telefone..."
+              value="<?= htmlspecialchars($busca) ?>"
+            />
+            <button class="btn btn-primary" type="submit">
+              <i class="bi bi-search"></i> Buscar
+            </button>
+            <?php if ($busca !== ''): ?>
+              <a href="?" class="btn btn-outline-secondary">
+                <i class="bi bi-x-lg"></i> Limpar
+              </a>
+            <?php endif; ?>
+          </div>
+        </form>
+
+        <!-- Feedback de resultados -->
+        <?php if ($busca !== ''): ?>
+          <p class="text-muted small">
+            <?= count($result) ?> resultado(s) encontrado(s) para
+            "<strong><?= htmlspecialchars($busca) ?></strong>"
+          </p>
+        <?php endif; ?>
+
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Telefone</th>
+              <th>Data de Entrada</th>
+              <th>Opções</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php if (empty($result)): ?>
+              <tr>
+                <td colspan="4" class="text-center text-muted py-3">
+                  <i class="bi bi-inbox"></i> Nenhum cliente encontrado.
+                </td>
+              </tr>
+            <?php else: ?>
+              <?php foreach ($result as $row): ?>
+                <tr>
+                  <td><?= htmlspecialchars($row['nome']) ?></td>
+                  <td><?= htmlspecialchars($row['telefone']) ?></td>
+                  <td><?= date('d/m/Y H:i', strtotime($row['data_entrada'])) ?></td>
+                  <td class="d-flex justify-content-end gap-2">
+                    <a class="btn btn-sm btn-primary" href="visualizar.php?id=<?= $row['id'] ?>">
+                      <i class="bi bi-eye-fill"></i> Ver
+                    </a>
+                    <a class="btn btn-sm btn-warning" href="editar.php?id=<?= $row['id'] ?>">
+                      <i class="bi bi-pencil-square"></i> Editar
+                    </a>
+                    <a class="btn btn-sm btn-danger" href="deletar.php?id=<?= $row['id'] ?>">
+                      <i class="bi bi-trash3-fill"></i> Excluir
+                    </a>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            <?php endif; ?>
+          </tbody>
+        </table>
+
       </div>
     </div>
-    
-    
   </main>
-  <footer>
+  <footer></footer>
 
-  </footer>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
     crossorigin="anonymous"></script>
   <script src="js/total-calculation.js"></script>
   <script src="js/mask-phone.js"></script>
   <script>
-    // Fazer a mensagem de sucesso desaparecer após 4 segundos
     const mensagem = document.getElementById('mensagemSucesso');
     if (mensagem) {
       setTimeout(() => {
         mensagem.classList.remove('show');
-        setTimeout(() => {
-          mensagem.remove();
-        }, 150);
+        setTimeout(() => mensagem.remove(), 150);
       }, 4000);
     }
   </script>
 </body>
-
 </html>

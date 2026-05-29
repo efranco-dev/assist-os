@@ -5,7 +5,6 @@ require('conexao.php');
 $sql = "SELECT * FROM `cadastro`";
 $statement = $pdo->query($sql);
 $result = $statement->fetchAll((PDO::FETCH_ASSOC));
-
 ?>
 
 <!doctype html>
@@ -26,12 +25,6 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
   <header>
   </header>
   <main class="container">
-    <?php if(isset($_SESSION['sucesso']) && $_SESSION['sucesso']): ?>
-    <div id="mensagemSucesso" class="alert alert-success alert-dismissible fade show mt-3" role="alert" style="background-color: #d4edda; border-color: #c3e6cb; color: #155724;">
-      <i class="bi bi-check-circle-fill"></i> Contato criado com sucesso!
-    </div>
-    <?php unset($_SESSION['sucesso']); ?>
-    <?php endif; ?>
     <div class="card my-4 shadow-sm">
       <div class="card-header d-flex justify-content-between align-items-center">
         <h2 class="h5 mb-0">Cadastro de Clientes e Serviço</h2>
@@ -58,7 +51,7 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
             <div class="col-md-3">
               <label class="form-label" for="bairro">Bairro</label>
               <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-geo-alt-fill"></i></span>
+                <span class="input-group-text"><i class="bi bi-cursor "></i></span>
                 <input id="bairro" autocomplete="off" class="form-control" type="text" name="bairro"
                   style="text-transform: uppercase;">
               </div>
@@ -152,8 +145,17 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
         </form>
       </div>
     </div>
-   
-    <a href="lista-clientes.php" class="btn btn-sm btn-outline-primary"><i class="bi bi-people-fill"></i> Ver Lista de Clientes</a>
+    
+    <?php if (isset($_SESSION['sucesso']) && $_SESSION['sucesso']): ?>
+      <div id="mensagemSucesso" class="alert alert-success alert-dismissible fade show mt-3" role="alert"
+        style="background-color: #d4edda; border-color: #c3e6cb; color: #155724;">
+        <i class="bi bi-check-circle-fill"></i> Contato criado com sucesso!
+      </div>
+      <?php unset($_SESSION['sucesso']); ?>
+    <?php endif; ?>
+
+    <a href="lista-clientes.php" class="btn btn-sm btn-outline-primary"><i class="bi bi-people-fill"></i> Ver Lista de
+      Clientes</a>
 
   </main>
   <footer>
@@ -165,7 +167,7 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
   <script src="js/total-calculation.js"></script>
   <script src="js/mask-phone.js"></script>
   <script>
-    // Fazer a mensagem de sucesso desaparecer após 4 segundos
+    // Fazer a mensagem de sucesso desaparecer após 4 segundos 
     const mensagem = document.getElementById('mensagemSucesso');
     if (mensagem) {
       setTimeout(() => {
