@@ -51,11 +51,19 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
             <div class="col-md-3">
               <label class="form-label" for="bairro">Bairro</label>
               <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-cursor "></i></span>
-                <input id="bairro" autocomplete="off" class="form-control" type="text" name="bairro"
-                  style="text-transform: uppercase;">
+                <span class="input-group-text"><i class="bi bi-phone-fill"></i></span>
+                <select name="bairro" id="bairro" class="form-select">
+                  <option value="">Selecione</option>
+                  <option value="Vicente Pires">VICENTE PIRES</option>
+                  <option value="Águas Claras">AGUAS CLARAS</option>
+                  <option value="Ceilândia">CEILÂNDIA</option>
+                  <option value="Taguatinga">TAGUATINGA</option>
+                  <option value="Samambaia">SAMAMBAIA</option>
+                  <option value="Outro">OUTRO</option>
+                </select>
               </div>
             </div>
+
             <div class="col-md-3">
               <label class="form-label" for="telefone">Telefone</label>
               <div class="input-group">
@@ -64,18 +72,17 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
                   oninput="maskPhone(event)">
               </div>
             </div>
-            <!-- fazendo testes -->
             <div class="col-md-3">
               <label class="form-label" for="aparelho">Aparelho</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-phone-fill"></i></span>
                 <select name="aparelho" id="aparelho" class="form-select">
                   <option value="">Selecione</option>
-                  <option value="microondas">MICROONDAS</option>
-                  <option value="tv de led">TV DE LED</option>
-                  <option value="tv de lcd">TV DE LCD</option>
-                  <option value="tv de plasma">TV DE PLASMA</option>
-                  <option value="outro">OUTRO</option>
+                  <option value="Microondas">MICROONDAS</option>
+                  <option value="Tv de Led">TV DE LED</option>
+                  <option value="Tv de Lcd">TV DE LCD</option>
+                  <option value="Tv de Plasma">TV DE PLASMA</option>
+                  <option value="Outro">OUTRA</option>
                 </select>
               </div>
             </div>
@@ -85,21 +92,21 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
                 <span class="input-group-text"><i class="bi bi-tag-fill"></i></i></span>
                 <select name="marca" id="marca" class="form-select">
                   <option value="">Selecione</option>
-                  <option value="brastemp">BRASTEMP</option>
-                  <option value="consul">CONSUL</option>
-                  <option value="electrolux">ELECTROLUX</option>
-                  <option value="panasonic">PANASONIC</option>
-                  <option value="philco">PHICO</option>
-                  <option value="midea">MIDEA</option>
-                  <option value="samsung">SAMSUNG</option>
-                  <option value="tcl">TCL</option>
-                  <option value="semp">SEMP</option>
-                  <option value="lg">LG</option>
-                  <option value="outro">OUTRO</option>
+                  <option value="Brastemp">BRASTEMP</option>
+                  <option value="Consul">CONSUL</option>
+                  <option value="Electrolux">ELECTROLUX</option>
+                  <option value="Panasonic">PANASONIC</option>
+                  <option value="Philco">PHICO</option>
+                  <option value="Midea">MIDEA</option>
+                  <option value="Samsung">SAMSUNG</option>
+                  <option value="Tcl">TCL</option>
+                  <option value="Semp">SEMP</option>
+                  <option value="Lg">LG</option>
+                  <option value="Outro">OUTRO</option>
                 </select>
               </div>
             </div>
-           
+
             <div class="col-md-3">
               <label class="form-label" for="modelo">Modelo</label>
               <div class="input-group">
