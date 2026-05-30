@@ -51,7 +51,7 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
             <div class="col-md-3">
               <label class="form-label" for="bairro">Bairro</label>
               <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-phone-fill"></i></span>
+                <span class="input-group-text"><i class="bi bi-cursor "></i></span>
                 <select name="bairro" id="bairro" class="form-select">
                   <option value="">Selecione</option>
                   <option value="Vicente Pires">VICENTE PIRES</option>
