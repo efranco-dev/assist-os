@@ -50,9 +50,9 @@ if (!$result) {
         <a href="lista-clientes.php" class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1">
           <i class="bi bi-people-fill"></i> Clientes
         </a>
-        <button class="btn btn-sm text-white d-flex align-items-center gap-1" style="background:#1a3a5c;">
+        <a href="index.php" class="btn btn-sm text-white d-flex align-items-center gap-1" style="background:#1a3a5c;">
           <i class="bi bi-person-fill-add"></i> Novo Cadastro
-        </button>
+        </a>
       </div>
     </div>
 
