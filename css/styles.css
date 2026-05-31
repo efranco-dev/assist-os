@@ -1,0 +1,14 @@
+/* Navegação - hover */
+.nav-link:hover {
+  color: #1a3a5c !important;
+  background-color: #e8f0f7;
+  border-radius: 6px 6px 0 0;
+  border-bottom: 2px solid #a0b8d0 !important;
+  transition: all 0.2s ease;
+}
+
+/* Garante que o link ativo não perca o estilo no hover */
+.nav-link.active:hover {
+  background-color: #dce8f3;
+  border-bottom: 2px solid #1a3a5c !important;
+}
