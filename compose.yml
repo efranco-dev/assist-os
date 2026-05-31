@@ -1,0 +1,9 @@
+services:
+  database:
+    image: mysql
+    restart: always
+    network_mode: host
+    environment:
+      - MYSQL_DATABASE=ordem
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_ROOT_PASSWORD=
