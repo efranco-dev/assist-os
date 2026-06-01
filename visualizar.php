@@ -22,14 +22,14 @@ if (!$result) {
 <html lang="pt-BR" data-bs-theme="light">
 
 <head>
-  <title>Visualizar Cadastro</title>
-  <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
+  <title>Visualizar</title>
+  <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.4/font/bootstrap-icons.css" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css">
+  <link href="css/bootstrap-icons.min.css" rel="stylesheet" />
+  <link href="css/bootstrap.min.css" rel="stylesheet" />
+  <link href="css/all.css" rel="stylesheet" />
+  <link href="css/styles.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -153,9 +153,7 @@ if (!$result) {
   </main>
   <footer>
   </footer>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-    crossorigin="anonymous"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

@@ -22,13 +22,13 @@ $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
 <head>
   <title>Lista de Clientes</title>
-  <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.4/font/bootstrap-icons.css" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css">
+  <link href="css/bootstrap-icons.min.css" rel="stylesheet" />
+  <link href="css/bootstrap.min.css" rel="stylesheet" />
+  <link href="css/all.css" rel="stylesheet" />
+  <link href="css/styles.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -37,7 +37,7 @@ $result = $statement->fetchAll(PDO::FETCH_ASSOC);
     <div class="container d-flex align-items-center gap-3 py-3">
       <div class="d-flex align-items-center justify-content-center rounded-3 text-white"
         style="width:48px; height:48px; background:#1a3a5c; flex-shrink:0;">
-        <i class="bi bi-tools fs-4"></i>
+        <i class="bi- bi-tools fs-4"></i>
       </div>
       <div>
         <h1 class="h5 mb-0 fw-semibold">Assist-OS</h1>
@@ -74,14 +74,6 @@ $result = $statement->fetchAll(PDO::FETCH_ASSOC);
     </div>
   </header>
   <main class="container">
-
-    <?php if (isset($_SESSION['sucesso']) && $_SESSION['sucesso']): ?>
-      <div id="mensagemSucesso" class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-        <i class="bi bi-check-circle-fill"></i> Contato criado com sucesso!
-      </div>
-      <?php unset($_SESSION['sucesso']); ?>
-    <?php endif; ?>
-
     <div class="card my-4 shadow-sm">
       <div class="card-header d-flex justify-content-between align-items-center">
         <h2 class="h5 mb-0">Lista de Clientes Cadastrados</h2>
@@ -113,6 +105,15 @@ $result = $statement->fetchAll(PDO::FETCH_ASSOC);
           </p>
         <?php endif; ?>
 
+        <?php if (!empty($_SESSION['sucesso'])): ?>
+          <div id="mensagemSucesso" class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill"></i>
+            Cliente excluído com sucesso.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+          </div>
+          <?php unset($_SESSION['sucesso']); ?>
+        <?php endif; ?>
+
         <table class="table table-striped table-sm">
           <thead>
             <tr>
@@ -142,7 +143,7 @@ $result = $statement->fetchAll(PDO::FETCH_ASSOC);
                     <a class="btn btn-sm btn-warning" href="editar.php?id=<?= $row['id'] ?>">
                       <i class="bi bi-pencil-square"></i> Editar
                     </a>
-                    <a class="btn btn-sm btn-danger" href="deletar.php?id=<?= $row['id'] ?>">
+                    <a class="btn btn-sm btn-danger delete-link" href="deletar.php?id=<?= $row['id'] ?>">
                       <i class="bi bi-trash3-fill"></i> Excluir
                     </a>
                   </td>
@@ -151,26 +152,35 @@ $result = $statement->fetchAll(PDO::FETCH_ASSOC);
             <?php endif; ?>
           </tbody>
         </table>
-
       </div>
     </div>
   </main>
+
+  <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar exclusão</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          Tem certeza que deseja excluir cliente?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button id="confirmDeleteButton" type="button" class="btn btn-danger">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <footer></footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-    crossorigin="anonymous"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/total-calculation.js"></script>
   <script src="js/mask-phone.js"></script>
-  <script>
-    const mensagem = document.getElementById('mensagemSucesso');
-    if (mensagem) {
-      setTimeout(() => {
-        mensagem.classList.remove('show');
-        setTimeout(() => mensagem.remove(), 150);
-      }, 4000);
-    }
-  </script>
+  <script src="js/mensagem-sucesso.js"></script>
+  <script src="js/delete-link.js"></script>
 </body>
 
 </html>

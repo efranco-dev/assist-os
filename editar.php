@@ -24,14 +24,14 @@ if (!$result) {
 <html lang="pt-BR" data-bs-theme="light">
 
 <head>
-  <title>Assist-OS</title>
-  <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
+  <title>Editar</title>
+  <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.4/font/bootstrap-icons.css" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css">
+  <link href="css/bootstrap-icons.min.css" rel="stylesheet" />
+  <link href="css/bootstrap.min.css" rel="stylesheet" />
+  <link href="css/all.css" rel="stylesheet" />
+  <link href="css/styles.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -213,71 +213,10 @@ if (!$result) {
   <footer>
 
   </footer>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-    crossorigin="anonymous"></script>
-  <script>
-    function maskPhone(e) {
-      var v = e.target.value.replace(/\D/g, '');
-      if (v.length > 10) {
-        v = v.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
-      } else if (v.length > 5) {
-        v = v.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, '($1) $2-$3');
-      } else if (v.length > 2) {
-        v = v.replace(/^(\d{2})(\d{0,5})/, '($1) $2');
-      }
-      e.target.value = v;
-    }
-
-    function parseCurrency(value) {
-      if (!value) return 0;
-      value = value.replace(/\./g, '').replace(/,/g, '.').trim();
-      var parsed = parseFloat(value);
-      return isNaN(parsed) ? 0 : parsed;
-    }
-
-    function formatCurrency(value) {
-      return value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
-
-    function formatCurrencyField(field) {
-      if (!field.value.trim()) {
-        field.value = '';
-        updateTotal();
-        return;
-      }
-      field.value = formatCurrency(parseCurrency(field.value));
-      updateTotal();
-    }
-
-    function updateTotal() {
-      var valorServicoField = document.getElementById('valor_servico');
-      var descontoField = document.getElementById('desconto');
-      var valorServico = parseCurrency(valorServicoField.value);
-      var desconto = parseCurrency(descontoField.value);
-      if (!valorServicoField.value.trim() && !descontoField.value.trim()) {
-        document.getElementById('valor_total').value = '';
-        return;
-      }
-      var total = valorServico - desconto;
-      document.getElementById('valor_total').value = formatCurrency(total >= 0 ? total : 0);
-    }
-
-    document.addEventListener('DOMContentLoaded', updateTotal);
-  </script>
-
-  <script>
-    // Fazer a mensagem de sucesso desaparecer após 4 segundos igual ao index.php
-    const mensagem = document.getElementById('mensagemSucesso');
-    if (mensagem) {
-      setTimeout(() => {
-        mensagem.classList.remove('show');
-        setTimeout(() => {
-          mensagem.remove();
-        }, 150);
-      }, 4000);
-    }
-  </script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/total-calculation.js"></script>
+  <script src="js/mask-phone.js"></script>
+  <script src="js/mensagem-sucesso.js"></script>
 </body>
 
 </html>
