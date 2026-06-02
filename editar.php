@@ -97,7 +97,7 @@ if (!$result) {
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-geo-alt-fill"></i></span>
                 <input id="endereco" value="<?= $result['endereco'] ?>" autocomplete="off" class="form-control"
-                  type="text" name="endereco" style="text-transform: uppercase;">
+                  type="text" name="endereco" style="text-transform: capitalize;">
               </div>
             </div>
             <div class="col-md-3">
@@ -106,12 +106,12 @@ if (!$result) {
                 <span class="input-group-text"><i class="bi bi-cursor "></i></span>
                 <select name="bairro" id="bairro" class="form-select">
                   <option value="">Selecione</option>
-                  <option value="Vicente Pires" <?= $result['bairro'] === 'Vicente Pires' ? 'selected' : '' ?>>VICENTE PIRES</option>
-                  <option value="Águas Claras" <?= $result['bairro'] === 'Águas Claras' ? 'selected' : '' ?>>AGUAS CLARAS</option>
-                  <option value="Ceilândia" <?= $result['bairro'] === 'Ceilândia' ? 'selected' : '' ?>>CEILÂNDIA</option>
-                  <option value="Taguatinga" <?= $result['bairro'] === 'Taguatinga' ? 'selected' : '' ?>>TAGUATINGA</option>
-                  <option value="Samambaia" <?= $result['bairro'] === 'Samambaia' ? 'selected' : '' ?>>SAMAMBAIA</option>
-                  <option value="Outro" <?= $result['bairro'] === 'Outro' ? 'selected' : '' ?>>OUTRO</option>
+                  <option value="Vicente Pires" <?= $result['bairro'] === 'Vicente Pires' ? 'selected' : '' ?>>Vicente Pires</option>
+                  <option value="Águas Claras" <?= $result['bairro'] === 'Águas Claras' ? 'selected' : '' ?>>Águas Claras</option>
+                  <option value="Ceilândia" <?= $result['bairro'] === 'Ceilândia' ? 'selected' : '' ?>>Ceilândia</option>
+                  <option value="Taguatinga" <?= $result['bairro'] === 'Taguatinga' ? 'selected' : '' ?>>Taguatinga</option>
+                  <option value="Samambaia" <?= $result['bairro'] === 'Samambaia' ? 'selected' : '' ?>>Samambaia</option>
+                  <option value="Outro" <?= $result['bairro'] === 'Outro' ? 'selected' : '' ?>>Outro</option>
                 </select>
               </div>
             </div>
@@ -129,11 +129,13 @@ if (!$result) {
                 <span class="input-group-text"><i class="bi bi-phone-fill"></i></span>
                 <select name="aparelho" id="aparelho" class="form-select">
                   <option value="">Selecione</option>
-                  <option value="Microondas" <?= $result['aparelho'] === 'Microondas' ? 'selected' : '' ?>>MICROONDAS</option>
-                  <option value="Tv de Led" <?= $result['aparelho'] === 'Tv de Led' ? 'selected' : '' ?>>TV DE LED</option>
-                  <option value="Tv de Lcd" <?= $result['aparelho'] === 'Tv de Lcd' ? 'selected' : '' ?>>TV DE LCD</option>
-                  <option value="Tv de Plasma" <?= $result['aparelho'] === 'Tv de Plasma' ? 'selected' : '' ?>>TV DE PLASMA</option>
-                  <option value="Outro" <?= $result['aparelho'] === 'Outro' ? 'selected' : '' ?>>OUTRA</option>
+                  <option value="Microondas" <?= $result['aparelho'] === 'Microondas' ? 'selected' : '' ?>>Microondas
+                  </option>
+                  <option value="Tv de Led" <?= $result['aparelho'] === 'Tv de Led' ? 'selected' : '' ?>>Tv de Led</option>
+                  <option value="Tv de Lcd" <?= $result['aparelho'] === 'Tv de Lcd' ? 'selected' : '' ?>>Tv de Lcd</option>
+                  <option value="Tv de Plasma" <?= $result['aparelho'] === 'Tv de Plasma' ? 'selected' : '' ?>>Tv de Plasma
+                  </option>
+                  <option value="Outro" <?= $result['aparelho'] === 'Outro' ? 'selected' : '' ?>>Outro</option>
                 </select>
               </div>
             </div>
@@ -143,17 +145,17 @@ if (!$result) {
                 <span class="input-group-text"><i class="bi bi-tag-fill"></i></span>
                 <select name="marca" id="marca" class="form-select">
                   <option value="">Selecione</option>
-                  <option value="Brastemp" <?= $result['marca'] === 'Brastemp' ? 'selected' : '' ?>>BRASTEMP</option>
-                  <option value="Consul" <?= $result['marca'] === 'Consul' ? 'selected' : '' ?>>CONSUL</option>
-                  <option value="Electrolux" <?= $result['marca'] === 'Electrolux' ? 'selected' : '' ?>>ELECTROLUX</option>
-                  <option value="Panasonic" <?= $result['marca'] === 'Panasonic' ? 'selected' : '' ?>>PANASONIC</option>
-                  <option value="Philco" <?= $result['marca'] === 'Philco' ? 'selected' : '' ?>>PHICO</option>
-                  <option value="Midea" <?= $result['marca'] === 'Midea' ? 'selected' : '' ?>>MIDEA</option>
-                  <option value="Samsung" <?= $result['marca'] === 'Samsung' ? 'selected' : '' ?>>SAMSUNG</option>
+                  <option value="Brastemp" <?= $result['marca'] === 'Brastemp' ? 'selected' : '' ?>>Brastemp</option>
+                  <option value="Consul" <?= $result['marca'] === 'Consul' ? 'selected' : '' ?>>Consul</option>
+                  <option value="Electrolux" <?= $result['marca'] === 'Electrolux' ? 'selected' : '' ?>>Electrolux</option>
+                  <option value="Panasonic" <?= $result['marca'] === 'Panasonic' ? 'selected' : '' ?>>Panasonic</option>
+                  <option value="Philco" <?= $result['marca'] === 'Philco' ? 'selected' : '' ?>>Philco</option>
+                  <option value="Midea" <?= $result['marca'] === 'Midea' ? 'selected' : '' ?>>Midea</option>
+                  <option value="Samsung" <?= $result['marca'] === 'Samsung' ? 'selected' : '' ?>>Samsung</option>
                   <option value="Tcl" <?= $result['marca'] === 'Tcl' ? 'selected' : '' ?>>TCL</option>
-                  <option value="Semp" <?= $result['marca'] === 'Semp' ? 'selected' : '' ?>>SEMP</option>
+                  <option value="Semp" <?= $result['marca'] === 'Semp' ? 'selected' : '' ?>>Semp</option>
                   <option value="Lg" <?= $result['marca'] === 'Lg' ? 'selected' : '' ?>>LG</option>
-                  <option value="Outro" <?= $result['marca'] === 'Outro' ? 'selected' : '' ?>>OUTRO</option>
+                  <option value="Outro" <?= $result['marca'] === 'Outro' ? 'selected' : '' ?>>Outro</option>
                 </select>
               </div>
             </div>
@@ -170,7 +172,7 @@ if (!$result) {
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-bug-fill"></i></span>
                 <input id="defeito" value="<?= $result['defeito'] ?>" autocomplete="off" class="form-control"
-                  type="text" name="defeito" style="text-transform: uppercase;">
+                  type="text" name="defeito" style="text-transform: capitalize;">
               </div>
             </div>
             <div class="col-md-4">
@@ -179,7 +181,7 @@ if (!$result) {
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-hammer"></i></span>
                 <input id="servico" value="<?= $result['servico'] ?>" autocomplete="off" class="form-control"
-                  type="text" name="servico" style="text-transform: uppercase;">
+                  type="text" name="servico" style="text-transform: capitalize;">
               </div>
             </div>
             <div class="col-md-4">
@@ -187,7 +189,7 @@ if (!$result) {
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-chat-text-fill"></i></span>
                 <textarea id="observacoes" autocomplete="off" class="form-control" name="observacoes"
-                  rows="1"><?= $result['observacoes'] ?></textarea>
+                  style="text-transform: capitalize;" rows="1"><?= $result['observacoes'] ?></textarea>
               </div>
             </div>
             <div class="col-md-4">
@@ -223,21 +225,24 @@ if (!$result) {
                 <span class="input-group-text"><i class="bi bi-clipboard-check-fill"></i></span>
                 <select id="status" name="status" class="form-select">
                   <option value="" <?= $result['status'] === '' ? 'selected' : '' ?>>Selecione</option>
-                  <option value="Orçamento" <?= $result['status'] === 'Orçamento' ? 'selected' : '' ?>>ORÇAMENTO</option>
-                  <option value="Em Analise" <?= $result['status'] === 'Em Analise' ? 'selected' : '' ?>>EM ANALISE</option>
-                  <option value="Autorizado" <?= $result['status'] === 'Autorizado' ? 'selected' : '' ?>>AUTORIZADO</option>
-                  <option value="Aguardando Peças" <?= $result['status'] === 'Aguardando Peças' ? 'selected' : '' ?>>AGUARDANDO PEÇAS</option>
-                  <option value="Pronto" <?= $result['status'] === 'Pronto' ? 'selected' : '' ?>>PRONTO</option>
-                  <option value="Recusado" <?= $result['status'] === 'Recusado' ? 'selected' : '' ?>>RECUSADO</option>
-                  <option value="Outro" <?= $result['status'] === 'Outro' ? 'selected' : '' ?>>OUTRO</option>
+                  <option value="Orçamento" <?= $result['status'] === 'Orçamento' ? 'selected' : '' ?>>Orçamento</option>
+                  <option value="Em Analise" <?= $result['status'] === 'Em Analise' ? 'selected' : '' ?>>Em Análise
+                  </option>
+                  <option value="Autorizado" <?= $result['status'] === 'Autorizado' ? 'selected' : '' ?>>Autorizado
+                  </option>
+                  <option value="Aguardando Peças" <?= $result['status'] === 'Aguardando Peças' ? 'selected' : '' ?>>
+                    Aguardando Peças</option>
+                  <option value="Pronto" <?= $result['status'] === 'Pronto' ? 'selected' : '' ?>>Pronto</option>
+                  <option value="Recusado" <?= $result['status'] === 'Recusado' ? 'selected' : '' ?>>Recusado</option>
+                  <option value="Outro" <?= $result['status'] === 'Outro' ? 'selected' : '' ?>>Outro</option>
                 </select>
               </div>
-          </div>
-          <div class="mt-3 text-end">
-            <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-arrow-counterclockwise"></i>
-              Atualizar
-            </button>
-          </div>
+            </div>
+            <div class="mt-3 text-end">
+              <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-arrow-counterclockwise"></i>
+                Atualizar
+              </button>
+            </div>
         </form>
       </div>
     </div>
