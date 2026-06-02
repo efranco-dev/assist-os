@@ -20,6 +20,7 @@ $telefone = filter_input(INPUT_POST, 'telefone', FILTER_DEFAULT);
 $valor_servico = filter_input(INPUT_POST, 'valor_servico', FILTER_DEFAULT);
 $desconto = filter_input(INPUT_POST, 'desconto', FILTER_DEFAULT);
 $total = filter_input(INPUT_POST, 'valor_total', FILTER_DEFAULT);
+$status = filter_input(INPUT_POST, 'status', FILTER_DEFAULT);
 
 function parseCurrency($value) {
     $value = trim($value);
@@ -38,7 +39,7 @@ try {
     $sql = "UPDATE `cadastro` SET `nome`=:nome, `endereco`=:endereco, `bairro`=:bairro, `telefone`=:telefone, `aparelho`=:aparelho, `marca`=:marca,
     `modelo`=:modelo, `defeito`=:defeito, `servico`=:servico,
     `observacoes`=:observacoes, `valor_servico`=:valor_servico,
-    `desconto`=:desconto, `valor_total`=:valor_total WHERE id = :id";
+    `desconto`=:desconto, `valor_total`=:valor_total, `status`=:status WHERE id = :id";
     $statement = $pdo->prepare($sql);
     $statement->execute([
         ':nome' => $nome,
@@ -54,6 +55,7 @@ try {
         ':valor_servico' => $valor_servico,
         ':desconto' => $desconto,
         ':valor_total' => $total,
+        ':status' => $status,
         ':id' => $id,
     ]);
     $_SESSION['sucesso'] = true;

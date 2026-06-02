@@ -104,8 +104,15 @@ if (!$result) {
               <label class="form-label" for="bairro">Bairro</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-cursor "></i></span>
-                <input id="bairro" value="<?= $result['bairro'] ?>" autocomplete="off" class="form-control" type="text"
-                  name="bairro" style="text-transform: uppercase;">
+                <select name="bairro" id="bairro" class="form-select">
+                  <option value="">Selecione</option>
+                  <option value="Vicente Pires" <?= $result['bairro'] === 'Vicente Pires' ? 'selected' : '' ?>>VICENTE PIRES</option>
+                  <option value="Águas Claras" <?= $result['bairro'] === 'Águas Claras' ? 'selected' : '' ?>>AGUAS CLARAS</option>
+                  <option value="Ceilândia" <?= $result['bairro'] === 'Ceilândia' ? 'selected' : '' ?>>CEILÂNDIA</option>
+                  <option value="Taguatinga" <?= $result['bairro'] === 'Taguatinga' ? 'selected' : '' ?>>TAGUATINGA</option>
+                  <option value="Samambaia" <?= $result['bairro'] === 'Samambaia' ? 'selected' : '' ?>>SAMAMBAIA</option>
+                  <option value="Outro" <?= $result['bairro'] === 'Outro' ? 'selected' : '' ?>>OUTRO</option>
+                </select>
               </div>
             </div>
             <div class="col-md-3">
@@ -120,16 +127,34 @@ if (!$result) {
               <label class="form-label" for="aparelho">Aparelho</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-phone-fill"></i></span>
-                <input id="aparelho" value="<?= $result['aparelho'] ?>" autocomplete="off" class="form-control"
-                  type="text" name="aparelho" style="text-transform: uppercase;">
+                <select name="aparelho" id="aparelho" class="form-select">
+                  <option value="">Selecione</option>
+                  <option value="Microondas" <?= $result['aparelho'] === 'Microondas' ? 'selected' : '' ?>>MICROONDAS</option>
+                  <option value="Tv de Led" <?= $result['aparelho'] === 'Tv de Led' ? 'selected' : '' ?>>TV DE LED</option>
+                  <option value="Tv de Lcd" <?= $result['aparelho'] === 'Tv de Lcd' ? 'selected' : '' ?>>TV DE LCD</option>
+                  <option value="Tv de Plasma" <?= $result['aparelho'] === 'Tv de Plasma' ? 'selected' : '' ?>>TV DE PLASMA</option>
+                  <option value="Outro" <?= $result['aparelho'] === 'Outro' ? 'selected' : '' ?>>OUTRA</option>
+                </select>
               </div>
             </div>
             <div class="col-md-3">
               <label class="form-label" for="marca">Marca</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-tag-fill"></i></span>
-                <input id="marca" value="<?= $result['marca'] ?>" autocomplete="off" class="form-control" type="text"
-                  name="marca" style="text-transform: uppercase;">
+                <select name="marca" id="marca" class="form-select">
+                  <option value="">Selecione</option>
+                  <option value="Brastemp" <?= $result['marca'] === 'Brastemp' ? 'selected' : '' ?>>BRASTEMP</option>
+                  <option value="Consul" <?= $result['marca'] === 'Consul' ? 'selected' : '' ?>>CONSUL</option>
+                  <option value="Electrolux" <?= $result['marca'] === 'Electrolux' ? 'selected' : '' ?>>ELECTROLUX</option>
+                  <option value="Panasonic" <?= $result['marca'] === 'Panasonic' ? 'selected' : '' ?>>PANASONIC</option>
+                  <option value="Philco" <?= $result['marca'] === 'Philco' ? 'selected' : '' ?>>PHICO</option>
+                  <option value="Midea" <?= $result['marca'] === 'Midea' ? 'selected' : '' ?>>MIDEA</option>
+                  <option value="Samsung" <?= $result['marca'] === 'Samsung' ? 'selected' : '' ?>>SAMSUNG</option>
+                  <option value="Tcl" <?= $result['marca'] === 'Tcl' ? 'selected' : '' ?>>TCL</option>
+                  <option value="Semp" <?= $result['marca'] === 'Semp' ? 'selected' : '' ?>>SEMP</option>
+                  <option value="Lg" <?= $result['marca'] === 'Lg' ? 'selected' : '' ?>>LG</option>
+                  <option value="Outro" <?= $result['marca'] === 'Outro' ? 'selected' : '' ?>>OUTRO</option>
+                </select>
               </div>
             </div>
             <div class="col-md-3">
@@ -192,6 +217,21 @@ if (!$result) {
                   readonly>
               </div>
             </div>
+            <div class="col-md-4">
+              <label class="form-label" for="status">Status</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-clipboard-check-fill"></i></span>
+                <select id="status" name="status" class="form-select">
+                  <option value="" <?= $result['status'] === '' ? 'selected' : '' ?>>Selecione</option>
+                  <option value="Orçamento" <?= $result['status'] === 'Orçamento' ? 'selected' : '' ?>>ORÇAMENTO</option>
+                  <option value="Em Analise" <?= $result['status'] === 'Em Analise' ? 'selected' : '' ?>>EM ANALISE</option>
+                  <option value="Autorizado" <?= $result['status'] === 'Autorizado' ? 'selected' : '' ?>>AUTORIZADO</option>
+                  <option value="Aguardando Peças" <?= $result['status'] === 'Aguardando Peças' ? 'selected' : '' ?>>AGUARDANDO PEÇAS</option>
+                  <option value="Pronto" <?= $result['status'] === 'Pronto' ? 'selected' : '' ?>>PRONTO</option>
+                  <option value="Recusado" <?= $result['status'] === 'Recusado' ? 'selected' : '' ?>>RECUSADO</option>
+                  <option value="Outro" <?= $result['status'] === 'Outro' ? 'selected' : '' ?>>OUTRO</option>
+                </select>
+              </div>
           </div>
           <div class="mt-3 text-end">
             <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-arrow-counterclockwise"></i>

@@ -199,6 +199,23 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
                   readonly>
               </div>
             </div>
+            <div class="col-md-3">
+              <label class="form-label" for="status">status do Aparelho</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-clipboard-check-fill"></i></span>
+                <select name="status" id="status" class="form-select">
+                  <option value="">Selecione</option>
+                  <option value="Orçamento">ORÇAMENTO</option>
+                  <option value="Em Analise">EM ANALISE</option>
+                  <option value="Autorizado">AUTORIZADO</option>
+                  <option value="Aguardando Peças">AGUARDANDO PEÇAS</option>
+                  <option value="Pronto">PRONTO</option>
+                  <option value="Recusado">RECUSADO</option>
+                  <option value="Outro">OUTRO</option>
+                </select>
+              </div>
+            </div>
+
           </div>
           <div class="mt-3 text-end">
             <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-person-fill-add"></i>
