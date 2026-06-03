@@ -21,6 +21,7 @@ $bairro = filter_input(INPUT_POST, 'bairro', FILTER_DEFAULT);
 $valor_servico = filter_input(INPUT_POST, 'valor_servico', FILTER_DEFAULT);
 $desconto = filter_input(INPUT_POST, 'desconto', FILTER_DEFAULT);
 $total = filter_input(INPUT_POST, 'valor_total', FILTER_DEFAULT);
+$status = filter_input(INPUT_POST, 'status', FILTER_DEFAULT);
 
 function parseCurrency($value) {
     $value = trim($value);
@@ -37,8 +38,8 @@ $total = parseCurrency($total);
 
 try {
     $data_entrada = date('Y-m-d H:i:s');
-    $sql = "INSERT INTO `cadastro`(nome, aparelho, marca, modelo, defeito, servico, observacoes, endereco,bairro, telefone, data_entrada, valor_servico, desconto, valor_total)
-     VALUES(:nome, :aparelho, :marca, :modelo, :defeito, :servico, :observacoes, :endereco, :bairro, :telefone, :data_entrada, :valor_servico, :desconto, :valor_total)";
+    $sql = "INSERT INTO `cadastro`(nome, aparelho, marca, modelo, defeito, servico, observacoes, endereco,bairro, telefone, data_entrada, valor_servico, desconto, valor_total, status)
+     VALUES(:nome, :aparelho, :marca, :modelo, :defeito, :servico, :observacoes, :endereco, :bairro, :telefone, :data_entrada, :valor_servico, :desconto, :valor_total, :status)";
     $statement = $pdo->prepare($sql);
     $statement->execute([
         ':nome' => $nome,
@@ -55,6 +56,7 @@ try {
         ':valor_servico' => $valor_servico,
         ':desconto' => $desconto,
         ':valor_total' => $total,
+        ':status' => $status,
     ]);
     $_SESSION['sucesso'] = true;
     header('Location:/');

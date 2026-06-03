@@ -72,7 +72,7 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
                 <input id="nome" autocomplete="off" class="form-control" type="text" name="nome"
-                  style="text-transform: uppercase;">
+                  style="text-transform: capitalize;">
               </div>
             </div>
             <div class="col-md-5">
@@ -80,7 +80,7 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-geo-alt-fill"></i></span>
                 <input id="endereco" autocomplete="off" class="form-control" type="text" name="endereco"
-                  style="text-transform: uppercase;">
+                  style="text-transform: capitalize;">
               </div>
             </div>
             <div class="col-md-3">
@@ -89,12 +89,12 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
                 <span class="input-group-text"><i class="bi bi-cursor "></i></span>
                 <select name="bairro" id="bairro" class="form-select">
                   <option value="">Selecione</option>
-                  <option value="Vicente Pires">VICENTE PIRES</option>
-                  <option value="Águas Claras">AGUAS CLARAS</option>
-                  <option value="Ceilândia">CEILÂNDIA</option>
-                  <option value="Taguatinga">TAGUATINGA</option>
-                  <option value="Samambaia">SAMAMBAIA</option>
-                  <option value="Outro">OUTRO</option>
+                  <option value="Vicente Pires">Vicente Pires</option>
+                  <option value="Águas Claras">Águas Claras</option>
+                  <option value="Ceilândia">Ceilândia</option>
+                  <option value="Taguatinga">Taguatinga</option>
+                  <option value="Samambaia">Samambaia</option>
+                  <option value="Outro">Outro</option>
                 </select>
               </div>
             </div>
@@ -113,11 +113,11 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
                 <span class="input-group-text"><i class="bi bi-phone-fill"></i></span>
                 <select name="aparelho" id="aparelho" class="form-select">
                   <option value="">Selecione</option>
-                  <option value="Microondas">MICROONDAS</option>
-                  <option value="Tv de Led">TV DE LED</option>
-                  <option value="Tv de Lcd">TV DE LCD</option>
-                  <option value="Tv de Plasma">TV DE PLASMA</option>
-                  <option value="Outro">OUTRA</option>
+                  <option value="Microondas">Microondas</option>
+                  <option value="Tv de Led">TV de Led</option>
+                  <option value="Tv de Lcd">TV de Lcd</option>
+                  <option value="Tv de Plasma">TV de Plasma</option>
+                  <option value="Outro">Outro</option>
                 </select>
               </div>
             </div>
@@ -127,17 +127,17 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
                 <span class="input-group-text"><i class="bi bi-tag-fill"></i></i></span>
                 <select name="marca" id="marca" class="form-select">
                   <option value="">Selecione</option>
-                  <option value="Brastemp">BRASTEMP</option>
-                  <option value="Consul">CONSUL</option>
-                  <option value="Electrolux">ELECTROLUX</option>
-                  <option value="Panasonic">PANASONIC</option>
-                  <option value="Philco">PHICO</option>
-                  <option value="Midea">MIDEA</option>
-                  <option value="Samsung">SAMSUNG</option>
+                  <option value="Brastemp">Brastemp</option>
+                  <option value="Consul">Consul</option>
+                  <option value="Electrolux">Electrolux</option>
+                  <option value="Panasonic">Panasonic</option>
+                  <option value="Philco">Philco</option>
+                  <option value="Midea">Midea</option>
+                  <option value="Samsung">Samsung</option>
                   <option value="Tcl">TCL</option>
-                  <option value="Semp">SEMP</option>
+                  <option value="Semp">Semp</option>
                   <option value="Lg">LG</option>
-                  <option value="Outro">OUTRO</option>
+                  <option value="Outro">Outro</option>
                 </select>
               </div>
             </div>
@@ -155,7 +155,7 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-bug-fill"></i></span>
                 <input id="defeito" autocomplete="off" class="form-control" type="text" name="defeito"
-                  style="text-transform: uppercase;">
+                  style="text-transform: capitalize;">
               </div>
             </div>
             <div class="col-md-4">
@@ -164,15 +164,15 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-hammer"></i></span>
                 <input id="servico" autocomplete="off" class="form-control" type="text" name="servico"
-                  style="text-transform: uppercase;">
+                  style="text-transform: capitalize;">
               </div>
             </div>
             <div class="col-md-4">
               <label class="form-label" for="observacoes">Observações</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-chat-text-fill"></i></span>
-                <textarea id="observacoes" autocomplete="off" class="form-control" name="observacoes"
-                  rows="1"></textarea>
+                <textarea id="observacoes" autocomplete="off" class="form-control" name="observacoes" rows="1"
+                  style="text-transform: capitalize"></textarea>
               </div>
             </div>
             <div class="col-md-4">
@@ -199,6 +199,23 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
                   readonly>
               </div>
             </div>
+            <div class="col-md-3">
+              <label class="form-label" for="status">status do Aparelho</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-clipboard-check-fill"></i></span>
+                <select name="status" id="status" class="form-select">
+                  <option value="">Selecione</option>
+                  <option value="Orçamento">Orçamento</option>
+                  <option value="Em Analise">Em Análise</option>
+                  <option value="Autorizado">Autorizado</option>
+                  <option value="Aguardando Peças">Aguardando Peças</option>
+                  <option value="Pronto">Pronto</option>
+                  <option value="Recusado">Recusado</option>
+                  <option value="Outro">Outro</option>
+                </select>
+              </div>
+            </div>
+
           </div>
           <div class="mt-3 text-end">
             <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-person-fill-add"></i>
