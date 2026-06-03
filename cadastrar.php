@@ -4,7 +4,7 @@ require('conexao.php');
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('location:/assist-os');
+    header('Location:/');
     exit();
 }
 
@@ -57,7 +57,7 @@ try {
         ':valor_total' => $total,
     ]);
     $_SESSION['sucesso'] = true;
-    header('location:/assist-os');
+    header('Location:/');
 } catch (PDOException $e) {
     echo "Ops! algo deu errado: " . $e->getMessage();
     exit();

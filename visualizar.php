@@ -4,7 +4,7 @@ require('conexao.php');
 
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 if (!$id) {
-  header('location:/assist-os');
+  header('Location:/');
   exit();
 }
 
@@ -13,7 +13,7 @@ $statement = $pdo->prepare($sql);
 $statement->execute(['id' => $id]);
 $result = $statement->fetch(PDO::FETCH_ASSOC);
 if (!$result) {
-  header('location:/assist-os');
+  header('Location:/');
   exit();
 }
 ?>
@@ -83,7 +83,7 @@ if (!$result) {
           <small class="text-muted"><i class="bi bi-clock-fill"></i>
             <?= date('d/m/Y H:i', strtotime($result['data_entrada'])) ?></small>
         </div>
-        <a href="/assist-os" class="btn btn-danger btn-sm"><i class="bi bi-box-arrow-left"></i> Voltar</a>
+        <a href="8080" class="btn btn-danger btn-sm"><i class="bi bi-box-arrow-left"></i> Voltar</a>
       </div>
       <div class="card-body">
         <div class="row gx-4">

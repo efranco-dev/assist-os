@@ -4,7 +4,7 @@ require('conexao.php');
 
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 if (!$id) {
-  header('location:/assist-os/');
+  header('Location:/');
   exit();
 }
 
@@ -14,7 +14,7 @@ $statement->execute(['id' => $id]);
 $result = $statement->fetch(PDO::FETCH_ASSOC);
 if (!$result) {
   $_SESSION['sucesso'] = true;
-  header('location:/assist-os/');
+  header('Location:/');
   exit();
 }
 
@@ -79,7 +79,7 @@ if (!$result) {
     <div class="card my-4 shadow-sm">
       <div class="card-header d-flex justify-content-between align-items-center">
         <h2 class="h5 mb-0">Editar cadastro</h2>
-        <a class="btn btn-sm btn-danger" href="/assist-os"><i class="bi bi-box-arrow-left"></i> Voltar</a>
+        <a class="btn btn-sm btn-danger" href="8080"><i class="bi bi-box-arrow-left"></i> Voltar</a>
       </div>
       <div class="card-body">
         <form action="atualizar.php?id=<?= $result['id'] ?>" method="post">
