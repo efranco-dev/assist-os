@@ -77,7 +77,7 @@ $result = $statement->fetchAll(PDO::FETCH_ASSOC);
     <div class="card my-4 shadow-sm">
       <div class="card-header d-flex justify-content-between align-items-center">
         <h2 class="h5 mb-0">Lista de Clientes Cadastrados</h2>
-        <a class="btn btn-sm btn-danger" href="8080"><i class="bi bi-box-arrow-left"></i> Voltar</a>
+        <a class="btn btn-sm btn-danger" href="/"><i class="bi bi-box-arrow-left"></i> Voltar</a>
       </div>
       <div class="card-body">
 

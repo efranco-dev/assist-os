@@ -63,7 +63,19 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
     </div>
   </header>
   <main class="container">
-    <div class="card mt-4">
+    <div class="card my-4 shadow-sm">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h2 class="h5 mb-0">Cadastrar Cliente</h2>
+      </div>
+      <?php if (isset($_SESSION['sucesso']) && $_SESSION['sucesso']): ?>
+        <div id="mensagemSucesso" class="alert alert-success alert-dismissible fade show mt-3" role="alert"
+          style="background-color: #d4edda; border-color: #c3e6cb; color: #155724;">
+          <i class="bi bi-check-circle-fill"></i> Contato criado com sucesso!
+        </div>
+        <?php unset($_SESSION['sucesso']); ?>
+      <?php endif; ?>
+
+
       <div class="card-body">
         <form action="cadastrar.php" method="post">
           <div class="row g-1">
@@ -158,7 +170,7 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
                   style="text-transform: capitalize;">
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-5">
               <label class="form-label" for="servico">Serviço Executado
               </label>
               <div class="input-group">
@@ -167,72 +179,64 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
                   style="text-transform: capitalize;">
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <label class="form-label" for="observacoes">Observações</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-chat-text-fill"></i></span>
-                <textarea id="observacoes" autocomplete="off" class="form-control" name="observacoes" rows="1"
+                <textarea id="observacoes" autocomplete="off" class="form-control" name="observacoes" rows="2"
                   style="text-transform: capitalize"></textarea>
               </div>
             </div>
-            <div class="col-md-4">
-              <label class="form-label" for="valor_servico">Valor do Serviço</label>
-              <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-cash-stack"></i></span>
-                <input id="valor_servico" autocomplete="off" class="form-control" type="text" name="valor_servico"
-                  inputmode="decimal" oninput="updateTotal()" onblur="formatCurrencyField(this)">
+            <div class="d-flex bg-light p-2 rounded-3 mt-2">
+              <div class="col-md-3">
+                <label class="form-label" for="valor_servico">Valor do Serviço</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-cash-stack"></i></span>
+                  <input id="valor_servico" autocomplete="off" class="form-control" type="text" name="valor_servico"
+                    inputmode="decimal" oninput="updateTotal()" onblur="formatCurrencyField(this)">
+                </div>
               </div>
-            </div>
-            <div class="col-md-4">
-              <label class="form-label" for="desconto">Desconto</label>
-              <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-percent"></i></span>
-                <input id="desconto" autocomplete="off" class="form-control" type="text" name="desconto"
-                  inputmode="decimal" oninput="updateTotal()" onblur="formatCurrencyField(this)">
+              <div class="col-md-3">
+                <label class="form-label" for="desconto">Desconto</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-percent"></i></span>
+                  <input id="desconto" autocomplete="off" class="form-control" type="text" name="desconto"
+                    inputmode="decimal" oninput="updateTotal()" onblur="formatCurrencyField(this)">
+                </div>
               </div>
-            </div>
-            <div class="col-md-4">
-              <label class="form-label" for="valor_total">Valor Total</label>
-              <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-calculator-fill"></i></span>
-                <input id="valor_total" autocomplete="off" class="form-control" type="text" name="valor_total" value=""
-                  readonly>
+              <div class="col-md-3">
+                <label class="form-label" for="valor_total">Valor Total</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-calculator-fill"></i></span>
+                  <input id="valor_total" autocomplete="off" class="form-control" type="text" name="valor_total"
+                    value="" readonly>
+                </div>
               </div>
-            </div>
-            <div class="col-md-3">
-              <label class="form-label" for="status">status do Aparelho</label>
-              <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-clipboard-check-fill"></i></span>
-                <select name="status" id="status" class="form-select">
-                  <option value="">Selecione</option>
-                  <option value="Orçamento">Orçamento</option>
-                  <option value="Em Analise">Em Análise</option>
-                  <option value="Autorizado">Autorizado</option>
-                  <option value="Aguardando Peças">Aguardando Peças</option>
-                  <option value="Pronto">Pronto</option>
-                  <option value="Recusado">Recusado</option>
-                  <option value="Outro">Outro</option>
-                </select>
+              <div class="col-md-3">
+                <label class="form-label" for="status">status do Aparelho</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-clipboard-check-fill"></i></span>
+                  <select name="status" id="status" class="form-select">
+                    <option value="">Selecione</option>
+                    <option value="Orçamento">Orçamento</option>
+                    <option value="Aguardando Autorização">Aguardando Autorização</option>
+                    <option value="Autorizado">Autorizado</option>
+                    <option value="Aguardando Peças">Aguardando Peças</option>
+                    <option value="Pronto">Pronto</option>
+                    <option value="Recusado">Recusado</option>
+                    <option value="Outro">Outro</option>
+                  </select>
+                </div>
               </div>
-            </div>
 
-          </div>
-          <div class="mt-3 text-end">
-            <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-person-fill-add"></i>
-              Cadastrar</button>
-          </div>
+            </div>
+            <div class="mt-3 text-end">
+              <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-person-fill-add"></i>
+                Cadastrar</button>
+            </div>
         </form>
-        <hr>
       </div>
     </div>
-
-    <?php if (isset($_SESSION['sucesso']) && $_SESSION['sucesso']): ?>
-      <div id="mensagemSucesso" class="alert alert-success alert-dismissible fade show mt-3" role="alert"
-        style="background-color: #d4edda; border-color: #c3e6cb; color: #155724;">
-        <i class="bi bi-check-circle-fill"></i> Contato criado com sucesso!
-      </div>
-      <?php unset($_SESSION['sucesso']); ?>
-    <?php endif; ?>
   </main>
   <footer>
 

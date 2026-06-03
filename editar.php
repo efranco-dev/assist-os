@@ -79,8 +79,15 @@ if (!$result) {
     <div class="card my-4 shadow-sm">
       <div class="card-header d-flex justify-content-between align-items-center">
         <h2 class="h5 mb-0">Editar cadastro</h2>
-        <a class="btn btn-sm btn-danger" href="8080"><i class="bi bi-box-arrow-left"></i> Voltar</a>
+        <a class="btn btn-sm btn-danger" href="/"><i class="bi bi-box-arrow-left"></i> Voltar</a>
       </div>
+      <?php if (isset($_SESSION['sucesso']) && $_SESSION['sucesso']): ?>
+        <div id="mensagemSucesso" class="alert alert-success alert-dismissible fade show mt-3" role="alert"
+          style="background-color: #d4edda; border-color: #c3e6cb; color: #155724;">
+          <i class="bi bi-check-circle-fill"></i> Contato atualizado com sucesso!
+        </div>
+        <?php unset($_SESSION['sucesso']); ?>
+      <?php endif; ?>
       <div class="card-body">
         <form action="atualizar.php?id=<?= $result['id'] ?>" method="post">
           <div class="row g-1">
@@ -106,10 +113,13 @@ if (!$result) {
                 <span class="input-group-text"><i class="bi bi-cursor "></i></span>
                 <select name="bairro" id="bairro" class="form-select">
                   <option value="">Selecione</option>
-                  <option value="Vicente Pires" <?= $result['bairro'] === 'Vicente Pires' ? 'selected' : '' ?>>Vicente Pires</option>
-                  <option value="Águas Claras" <?= $result['bairro'] === 'Águas Claras' ? 'selected' : '' ?>>Águas Claras</option>
+                  <option value="Vicente Pires" <?= $result['bairro'] === 'Vicente Pires' ? 'selected' : '' ?>>Vicente
+                    Pires</option>
+                  <option value="Águas Claras" <?= $result['bairro'] === 'Águas Claras' ? 'selected' : '' ?>>Águas Claras
+                  </option>
                   <option value="Ceilândia" <?= $result['bairro'] === 'Ceilândia' ? 'selected' : '' ?>>Ceilândia</option>
-                  <option value="Taguatinga" <?= $result['bairro'] === 'Taguatinga' ? 'selected' : '' ?>>Taguatinga</option>
+                  <option value="Taguatinga" <?= $result['bairro'] === 'Taguatinga' ? 'selected' : '' ?>>Taguatinga
+                  </option>
                   <option value="Samambaia" <?= $result['bairro'] === 'Samambaia' ? 'selected' : '' ?>>Samambaia</option>
                   <option value="Outro" <?= $result['bairro'] === 'Outro' ? 'selected' : '' ?>>Outro</option>
                 </select>
@@ -175,7 +185,7 @@ if (!$result) {
                   type="text" name="defeito" style="text-transform: capitalize;">
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-5">
               <label class="form-label" for="servico">Serviço Executado
               </label>
               <div class="input-group">
@@ -184,58 +194,60 @@ if (!$result) {
                   type="text" name="servico" style="text-transform: capitalize;">
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <label class="form-label" for="observacoes">Observações</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-chat-text-fill"></i></span>
                 <textarea id="observacoes" autocomplete="off" class="form-control" name="observacoes"
-                  style="text-transform: capitalize;" rows="1"><?= $result['observacoes'] ?></textarea>
+                  style="text-transform: capitalize;" rows="2"><?= $result['observacoes'] ?></textarea>
               </div>
             </div>
-            <div class="col-md-4">
-              <label class="form-label" for="valor_servico">Valor do Serviço</label>
-              <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-cash-stack"></i></span>
-                <input id="valor_servico" autocomplete="off" class="form-control" type="text" name="valor_servico"
-                  value="<?= isset($result['valor_servico']) ? number_format((float) $result['valor_servico'], 2, ',', '.') : '' ?>"
-                  inputmode="decimal" oninput="updateTotal()" onblur="formatCurrencyField(this)">
+            <div class="d-flex bg-light p-2 rounded-3 mt-2">
+              <div class="col-md-3">
+                <label class="form-label" for="valor_servico">Valor do Serviço</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-cash-stack"></i></span>
+                  <input id="valor_servico" autocomplete="off" class="form-control" type="text" name="valor_servico"
+                    value="<?= isset($result['valor_servico']) ? number_format((float) $result['valor_servico'], 2, ',', '.') : '' ?>"
+                    inputmode="decimal" oninput="updateTotal()" onblur="formatCurrencyField(this)">
+                </div>
               </div>
-            </div>
-            <div class="col-md-4">
-              <label class="form-label" for="desconto">Desconto</label>
-              <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-percent"></i></span>
-                <input id="desconto" autocomplete="off" class="form-control" type="text" name="desconto"
-                  value="<?= isset($result['desconto']) ? number_format((float) $result['desconto'], 2, ',', '.') : '' ?>"
-                  inputmode="decimal" oninput="updateTotal()" onblur="formatCurrencyField(this)">
+              <div class="col-md-3">
+                <label class="form-label" for="desconto">Desconto</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-percent"></i></span>
+                  <input id="desconto" autocomplete="off" class="form-control" type="text" name="desconto"
+                    value="<?= isset($result['desconto']) ? number_format((float) $result['desconto'], 2, ',', '.') : '' ?>"
+                    inputmode="decimal" oninput="updateTotal()" onblur="formatCurrencyField(this)">
+                </div>
               </div>
-            </div>
-            <div class="col-md-4">
-              <label class="form-label" for="valor_total">Valor Total</label>
-              <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-calculator-fill"></i></span>
-                <input id="valor_total" autocomplete="off" class="form-control" type="text" name="valor_total"
-                  value="<?= isset($result['valor_total']) ? number_format((float) $result['valor_total'], 2, ',', '.') : '' ?>"
-                  readonly>
+              <div class="col-md-3">
+                <label class="form-label" for="valor_total">Valor Total</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-calculator-fill"></i></span>
+                  <input id="valor_total" autocomplete="off" class="form-control" type="text" name="valor_total"
+                    value="<?= isset($result['valor_total']) ? number_format((float) $result['valor_total'], 2, ',', '.') : '' ?>"
+                    readonly>
+                </div>
               </div>
-            </div>
-            <div class="col-md-4">
-              <label class="form-label" for="status">Status</label>
-              <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-clipboard-check-fill"></i></span>
-                <select id="status" name="status" class="form-select">
-                  <option value="" <?= $result['status'] === '' ? 'selected' : '' ?>>Selecione</option>
-                  <option value="Orçamento" <?= $result['status'] === 'Orçamento' ? 'selected' : '' ?>>Orçamento</option>
-                  <option value="Em Analise" <?= $result['status'] === 'Em Analise' ? 'selected' : '' ?>>Em Análise
-                  </option>
-                  <option value="Autorizado" <?= $result['status'] === 'Autorizado' ? 'selected' : '' ?>>Autorizado
-                  </option>
-                  <option value="Aguardando Peças" <?= $result['status'] === 'Aguardando Peças' ? 'selected' : '' ?>>
-                    Aguardando Peças</option>
-                  <option value="Pronto" <?= $result['status'] === 'Pronto' ? 'selected' : '' ?>>Pronto</option>
-                  <option value="Recusado" <?= $result['status'] === 'Recusado' ? 'selected' : '' ?>>Recusado</option>
-                  <option value="Outro" <?= $result['status'] === 'Outro' ? 'selected' : '' ?>>Outro</option>
-                </select>
+              <div class="col-md-3">
+                <label class="form-label" for="status">Status</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-clipboard-check-fill"></i></span>
+                  <select id="status" name="status" class="form-select">
+                    <option value="" <?= $result['status'] === '' ? 'selected' : '' ?>>Selecione</option>
+                    <option value="Orçamento" <?= $result['status'] === 'Orçamento' ? 'selected' : '' ?>>Orçamento</option>
+                    <option value="Em Analise" <?= $result['status'] === 'Em Analise' ? 'selected' : '' ?>>Em Análise
+                    </option>
+                    <option value="Autorizado" <?= $result['status'] === 'Autorizado' ? 'selected' : '' ?>>Autorizado
+                    </option>
+                    <option value="Aguardando Peças" <?= $result['status'] === 'Aguardando Peças' ? 'selected' : '' ?>>
+                      Aguardando Peças</option>
+                    <option value="Pronto" <?= $result['status'] === 'Pronto' ? 'selected' : '' ?>>Pronto</option>
+                    <option value="Recusado" <?= $result['status'] === 'Recusado' ? 'selected' : '' ?>>Recusado</option>
+                    <option value="Outro" <?= $result['status'] === 'Outro' ? 'selected' : '' ?>>Outro</option>
+                  </select>
+                </div>
               </div>
             </div>
             <div class="mt-3 text-end">
@@ -246,14 +258,6 @@ if (!$result) {
         </form>
       </div>
     </div>
-    <?php if (isset($_SESSION['sucesso']) && $_SESSION['sucesso']): ?>
-      <div id="mensagemSucesso" class="alert alert-success alert-dismissible fade show mt-3" role="alert"
-        style="background-color: #d4edda; border-color: #c3e6cb; color: #155724;">
-        <i class="bi bi-check-circle-fill"></i> Contato atualizado com sucesso!
-      </div>
-      <?php unset($_SESSION['sucesso']); ?>
-    <?php endif; ?>
-
   </main>
   <footer>
 

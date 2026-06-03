@@ -20,7 +20,7 @@
 
       confirmDeleteButton.addEventListener('click', function () {
         if (deleteHref) {
-          window.Location.href = deleteHref;
+          window.location.href = deleteHref;
         }
       });
     });

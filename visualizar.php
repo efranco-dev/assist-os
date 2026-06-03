@@ -83,23 +83,23 @@ if (!$result) {
           <small class="text-muted"><i class="bi bi-clock-fill"></i>
             <?= date('d/m/Y H:i', strtotime($result['data_entrada'])) ?></small>
         </div>
-        <a href="8080" class="btn btn-danger btn-sm"><i class="bi bi-box-arrow-left"></i> Voltar</a>
+        <a href="/" class="btn btn-danger btn-sm"><i class="bi bi-box-arrow-left"></i> Voltar</a>
       </div>
       <div class="card-body">
         <div class="row gx-4">
           <div class="col-12 col-md-6">
             <div class="list-group list-group-flush">
               <div class="list-group-item px-0 py-2 border-bottom">
-                <span class="text-secondary "><i class="bi bi-person-fill me-1"></i> Nome:</span>
-                <span class="fw-semibold text-capitalize"> <?= $result['nome'] ?></span>
+                <span class="text-secondary"><i class="bi bi-person-fill me-1"></i> Nome:</span>
+                <span class="fw-semibold"> <?= $result['nome'] ?></span>
               </div>
               <div class="list-group-item px-0 py-2 border-bottom">
                 <span class="text-secondary"><i class="bi bi-geo-alt-fill me-1"></i> Endereço:</span>
-                <span class="fw-semibold text-capitalize"> <?= $result['endereco'] ?></span>
+                <span class="fw-semibold"> <?= $result['endereco'] ?></span>
               </div>
               <div class="list-group-item px-0 py-2 border-bottom">
                 <span class="text-secondary"><i class="bi bi-cursor me-1"></i> Bairro:</span>
-                <span class="fw-semibold text-capitalize"> <?= $result['bairro'] ?></span>
+                <span class="fw-semibold"> <?= $result['bairro'] ?></span>
               </div>
               <div class="list-group-item px-0 py-2 border-bottom">
                 <span class="text-secondary"><i class="bi bi-telephone-fill me-1"></i> Telefone:</span>
@@ -107,19 +107,15 @@ if (!$result) {
               </div>
               <div class="list-group-item px-0 py-2 border-bottom">
                 <span class="text-secondary"><i class="bi bi-phone-fill me-1"></i> Aparelho:</span>
-                <span class="fw-semibold text-capitalize"> <?= $result['aparelho'] ?></span>
+                <span class="fw-semibold"> <?= $result['aparelho'] ?></span>
               </div>
               <div class="list-group-item px-0 py-2 border-bottom">
                 <span class="text-secondary"><i class="bi bi-tag-fill me-1"></i> Marca:</span>
-                <span class="fw-semibold text-capitalize"> <?= $result['marca'] ?></span>
+                <span class="fw-semibold"> <?= $result['marca'] ?></span>
               </div>
               <div class="list-group-item px-0 py-2 border-bottom">
                 <span class="text-secondary"><i class="bi bi-box-seam me-1"></i> Modelo:</span>
-                <span class="fw-semibold text-capitalize"> <?= $result['modelo'] ?></span>
-              </div>
-              <div class="list-group-item px-0 py-2 border-bottom">
-                <span class="text-secondary"><i class="bi bi-clipboard-check-fill me-1"></i> status:</span>
-                <span class="fw-semibold text-capitalize"> <?= $result['status'] ?></span>
+                <span class="fw-semibold"> <?= $result['modelo'] ?></span>
               </div>
             </div>
           </div>
@@ -127,11 +123,11 @@ if (!$result) {
             <div class="list-group list-group-flush">
               <div class="list-group-item px-0 py-2 border-bottom">
                 <span class="text-secondary"><i class="bi bi-bug-fill me-1"></i> Defeito:</span>
-                <span class="fw-semibold text-capitalize"> <?= $result['defeito'] ?></span>
+                <span class="fw-semibold"> <?= $result['defeito'] ?></span>
               </div>
               <div class="list-group-item px-0 py-2 border-bottom">
                 <span class="text-secondary"><i class="bi bi-hammer me-1"></i> Serviço Executado:</span>
-                <span class="fw-semibold text-capitalize"> <?= $result['servico'] ?></span>
+                <span class="fw-semibold"> <?= $result['servico'] ?></span>
               </div>
               <div class="list-group-item px-0 py-2 border-bottom">
                 <span class="text-secondary"><i class="bi bi-cash-stack me-1"></i> Valor do Serviço:</span>
@@ -147,9 +143,8 @@ if (!$result) {
               </div>
               <div class="list-group-item px-0 py-2 border-bottom">
                 <span class="text-secondary"><i class="bi bi-chat-text-fill me-1"></i> Observações:</span>
-                <span class="fw-semibold d-block mt-1 text-capitalize"> <?= nl2br(htmlspecialchars($result['observacoes'])) ?></span>
+                <span class="fw-semibold d-block mt-1"> <?= nl2br(htmlspecialchars($result['observacoes'])) ?></span>
               </div>
-
             </div>
           </div>
         </div>
