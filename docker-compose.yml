@@ -1,7 +1,7 @@
 services:
   php_app:
     build: .
-    container_name: php-app
+    container_name: assist-os-app
     ports:
       - "8080:80"
     volumes:
@@ -14,7 +14,7 @@ services:
 
   mysql:
     image: mysql:8.0
-    container_name: mysql-db
+    container_name: assist-os-mysql
     ports:
       - "3307:3306"
     environment:
@@ -33,7 +33,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
-    container_name: phpmyadmin
+    container_name: assist-os-phpmyadmin
     ports:
       - "8081:80"
     environment:
