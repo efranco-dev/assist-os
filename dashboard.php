@@ -2,39 +2,39 @@
 require('conexao.php');
 
 // ─── Stats ───
-$total_cadastros = $pdo->query("SELECT COUNT(*) FROM cadastro")->fetchColumn();
-$total_este_mes  = $pdo->query("SELECT COUNT(*) FROM cadastro WHERE DATE_FORMAT(data_entrada, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')")->fetchColumn();
-$total_hoje      = $pdo->query("SELECT COUNT(*) FROM cadastro WHERE DATE(data_entrada) = CURDATE()")->fetchColumn();
-$total_pronto    = $pdo->query("SELECT COUNT(*) FROM cadastro WHERE status = 'Pronto'")->fetchColumn();
+$total_clientes  = $pdo->query("SELECT COUNT(*) FROM clientes")->fetchColumn();
+$total_ordens    = $pdo->query("SELECT COUNT(*) FROM ordens_servico")->fetchColumn();
+$total_este_mes  = $pdo->query("SELECT COUNT(*) FROM ordens_servico WHERE DATE_FORMAT(data_entrada, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')")->fetchColumn();
+$total_pronto    = $pdo->query("SELECT COUNT(*) FROM ordens_servico WHERE status = 'Pronto'")->fetchColumn();
 
 // ─── Chart data ───
 
 // Status
-$status_data = $pdo->query("SELECT COALESCE(NULLIF(status,''), 'Sem status') as label, COUNT(*) as qtd FROM cadastro GROUP BY label ORDER BY qtd DESC")->fetchAll(PDO::FETCH_ASSOC);
+$status_data = $pdo->query("SELECT COALESCE(NULLIF(status,''), 'Sem status') as label, COUNT(*) as qtd FROM ordens_servico GROUP BY label ORDER BY qtd DESC")->fetchAll(PDO::FETCH_ASSOC);
 $status_labels = json_encode(array_column($status_data, 'label'));
 $status_counts = json_encode(array_map('intval', array_column($status_data, 'qtd')));
 
 // Monthly entries (last 12 months)
 $meses = $pdo->query("
   SELECT DATE_FORMAT(data_entrada, '%Y-%m') as mes, COUNT(*) as qtd
-  FROM cadastro WHERE data_entrada >= DATE_SUB(NOW(), INTERVAL 12 MONTH)
+  FROM ordens_servico WHERE data_entrada >= DATE_SUB(NOW(), INTERVAL 12 MONTH)
   GROUP BY mes ORDER BY mes
 ")->fetchAll(PDO::FETCH_ASSOC);
 $mes_labels = json_encode(array_column($meses, 'mes'));
 $mes_counts = json_encode(array_map('intval', array_column($meses, 'qtd')));
 
 // Top aparelhos
-$ap_data = $pdo->query("SELECT COALESCE(NULLIF(aparelho,''), 'Sem aparelho') as label, COUNT(*) as qtd FROM cadastro GROUP BY label ORDER BY qtd DESC LIMIT 8")->fetchAll(PDO::FETCH_ASSOC);
+$ap_data = $pdo->query("SELECT COALESCE(NULLIF(aparelho,''), 'Sem aparelho') as label, COUNT(*) as qtd FROM ordens_servico GROUP BY label ORDER BY qtd DESC LIMIT 8")->fetchAll(PDO::FETCH_ASSOC);
 $ap_labels = json_encode(array_column($ap_data, 'label'));
 $ap_counts = json_encode(array_map('intval', array_column($ap_data, 'qtd')));
 
 // Top marcas
-$ma_data = $pdo->query("SELECT COALESCE(NULLIF(marca,''), 'Sem marca') as label, COUNT(*) as qtd FROM cadastro GROUP BY label ORDER BY qtd DESC LIMIT 8")->fetchAll(PDO::FETCH_ASSOC);
+$ma_data = $pdo->query("SELECT COALESCE(NULLIF(marca,''), 'Sem marca') as label, COUNT(*) as qtd FROM ordens_servico GROUP BY label ORDER BY qtd DESC LIMIT 8")->fetchAll(PDO::FETCH_ASSOC);
 $ma_labels = json_encode(array_column($ma_data, 'label'));
 $ma_counts = json_encode(array_map('intval', array_column($ma_data, 'qtd')));
 
-// Bairros
-$bairro_data = $pdo->query("SELECT COALESCE(NULLIF(bairro,''), 'Sem bairro') as label, COUNT(*) as qtd FROM cadastro GROUP BY label ORDER BY qtd DESC")->fetchAll(PDO::FETCH_ASSOC);
+// Bairros (from clientes)
+$bairro_data = $pdo->query("SELECT COALESCE(NULLIF(bairro,''), 'Sem bairro') as label, COUNT(*) as qtd FROM clientes GROUP BY label ORDER BY qtd DESC")->fetchAll(PDO::FETCH_ASSOC);
 $bairro_labels = json_encode(array_column($bairro_data, 'label'));
 $bairro_counts = json_encode(array_map('intval', array_column($bairro_data, 'qtd')));
 ?>
@@ -106,8 +106,8 @@ $bairro_counts = json_encode(array_map('intval', array_column($bairro_data, 'qtd
               <i class="bi bi-people-fill fs-4" style="color:var(--brand-color)"></i>
             </div>
             <div class="min-w-0">
-              <div class="fs-4 fw-bold"><?= $total_cadastros ?></div>
-              <small class="text-muted text-nowrap">Total de Cadastros</small>
+              <div class="fs-4 fw-bold"><?= $total_clientes ?></div>
+              <small class="text-muted text-nowrap">Total de Clientes</small>
             </div>
           </div>
         </div>
@@ -120,7 +120,7 @@ $bairro_counts = json_encode(array_map('intval', array_column($bairro_data, 'qtd
             </div>
             <div class="min-w-0">
               <div class="fs-4 fw-bold"><?= $total_este_mes ?></div>
-              <small class="text-muted text-nowrap">Este Mês</small>
+              <small class="text-muted text-nowrap">Ordens este Mês</small>
             </div>
           </div>
         </div>
@@ -129,11 +129,11 @@ $bairro_counts = json_encode(array_map('intval', array_column($bairro_data, 'qtd
         <div class="stat-card card p-3 h-100">
           <div class="d-flex align-items-center gap-3">
             <div class="rounded-3 p-2" style="background:rgba(13,110,253,0.1)">
-              <i class="bi bi-clock fs-4 text-primary"></i>
+              <i class="bi bi-clock-history fs-4 text-primary"></i>
             </div>
             <div class="min-w-0">
-              <div class="fs-4 fw-bold"><?= $total_hoje ?></div>
-              <small class="text-muted text-nowrap">Hoje</small>
+              <div class="fs-4 fw-bold"><?= $total_ordens ?></div>
+              <small class="text-muted text-nowrap">Total de OS</small>
             </div>
           </div>
         </div>
@@ -158,7 +158,7 @@ $bairro_counts = json_encode(array_map('intval', array_column($bairro_data, 'qtd
     <div class="row g-3 mb-4">
       <?php
       $modulos = [
-        ['link' => 'index.php',         'icon' => 'bi-clipboard2',     'label' => 'Cadastros',        'color' => '#1a3a5c'],
+        ['link' => 'clientes.php',      'icon' => 'bi-people-fill',    'label' => 'Clientes',         'color' => '#1a3a5c'],
         ['link' => 'ordem-servico.php', 'icon' => 'bi-clock-history',  'label' => 'Ordem de Serviço', 'color' => '#0d6efd'],
         ['link' => 'vendas.php',        'icon' => 'bi-cart3',          'label' => 'Vendas',           'color' => '#198754'],
         ['link' => 'financeiro.php',    'icon' => 'bi-wallet2',        'label' => 'Financeiro',       'color' => '#6f42c1'],

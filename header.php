@@ -1,9 +1,17 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (!isset($_SESSION['logado']) || !$_SESSION['logado']) {
+    header('Location: login.php');
+    exit();
+}
+
 $current_page = basename($_SERVER['PHP_SELF']);
 
 $nav_items = [
     'dashboard.php'     => ['label' => 'Dashboard',       'icon' => 'bi-speedometer2'],
-    'index.php'         => ['label' => 'Cadastros',        'icon' => 'bi-clipboard2'],
+    'clientes.php'      => ['label' => 'Clientes',         'icon' => 'bi-people-fill'],
     'ordem-servico.php' => ['label' => 'Ordem de Serviço', 'icon' => 'bi-clock-history'],
     'vendas.php'        => ['label' => 'Vendas',           'icon' => 'bi-cart3'],
     'financeiro.php'    => ['label' => 'Financeiro',       'icon' => 'bi-wallet2'],
@@ -14,15 +22,20 @@ $nav_items = [
 ];
 
 $parent_map = [
-    'editar.php'       => 'index.php',
-    'visualizar.php'   => 'index.php',
-    'lista-clientes.php' => 'index.php',
-    'cadastrar.php'    => 'index.php',
-    'atualizar.php'    => 'index.php',
-    'deletar.php'      => 'index.php',
+    'index.php'        => 'clientes.php',
+    'cliente-novo.php' => 'clientes.php',
+    'cliente-editar.php' => 'clientes.php',
+    'visualizar.php'   => 'ordem-servico.php',
+    'editar.php'       => 'ordem-servico.php',
+    'os-nova.php'      => 'ordem-servico.php',
+    'os-editar.php'    => 'ordem-servico.php',
+    'cadastrar.php'    => 'clientes.php',
+    'atualizar.php'    => 'clientes.php',
+    'deletar.php'      => 'clientes.php',
 ];
 
 $active_key = $parent_map[$current_page] ?? $current_page;
+$user_nome = $_SESSION['user_nome'] ?? 'Usuário';
 ?>
 <!-- Top Bar -->
 <header id="topbar" class="d-flex align-items-center px-3 gap-2 border-bottom">
@@ -42,12 +55,15 @@ $active_key = $parent_map[$current_page] ?? $current_page;
     <button id="themeToggle" class="btn btn-sm btn-outline-secondary d-flex align-items-center" title="Alternar tema">
       <i class="bi bi-moon-fill"></i>
     </button>
-    <a href="lista-clientes.php" class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1">
-      <i class="bi bi-people-fill"></i> <span class="d-none d-md-inline">Clientes</span>
-    </a>
-    <a href="index.php" class="btn btn-sm text-white d-flex align-items-center gap-1" style="background:var(--brand-color)">
-      <i class="bi bi-person-fill-add"></i> <span class="d-none d-md-inline">Novo Cadastro</span>
-    </a>
+    <div class="dropdown">
+      <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1" data-bs-toggle="dropdown">
+        <i class="bi bi-person-circle"></i>
+        <span class="d-none d-md-inline small"><?= htmlspecialchars($user_nome) ?></span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+        <li><a class="dropdown-item small" href="logout.php"><i class="bi bi-box-arrow-right"></i> Sair</a></li>
+      </ul>
+    </div>
   </div>
 </header>
 
