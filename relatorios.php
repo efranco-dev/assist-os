@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-bs-theme="light">
+<html lang="pt-BR" data-bs-theme="light">
 
 <head>
     <title>Relatórios</title>

@@ -1,12 +1,16 @@
 <?php
 session_start();
 require('conexao.php');
+require('gerenciar_opcoes.php');
+
+$sel_ap = $_SESSION['sel_ap'] ?? '';
+$sel_ma = $_SESSION['sel_ma'] ?? '';
+unset($_SESSION['sel_ap'], $_SESSION['sel_ma']);
 
 $sql = "SELECT * FROM `cadastro`";
 $statement = $pdo->query($sql);
 $result = $statement->fetchAll((PDO::FETCH_ASSOC));
 ?>
-
 <!doctype html>
 <html lang="pt-BR" data-bs-theme="light">
 
@@ -23,7 +27,6 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
 
 <body>
   <header>
-    <!-- Barra da marca -->
     <div class="container d-flex align-items-center gap-3 py-3">
       <div class="d-flex align-items-center justify-content-center rounded-3 text-white"
         style="width:48px; height:48px; background:#1a3a5c; flex-shrink:0;">
@@ -43,7 +46,6 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
         </a>
       </div>
     </div>
-    <!-- Navegação -->
     <div class="border-top bg-light">
       <div class="container mb-3">
         <nav class="nav">
@@ -74,7 +76,6 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
         </div>
         <?php unset($_SESSION['sucesso']); ?>
       <?php endif; ?>
-
 
       <div class="card-body">
         <form action="cadastrar.php" method="post">
@@ -125,32 +126,34 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
                 <span class="input-group-text"><i class="bi bi-phone-fill"></i></span>
                 <select name="aparelho" id="aparelho" class="form-select">
                   <option value="">Selecione</option>
-                  <option value="Microondas">Microondas</option>
-                  <option value="Tv de Led">TV de Led</option>
-                  <option value="Tv de Lcd">TV de Lcd</option>
-                  <option value="Tv de Plasma">TV de Plasma</option>
-                  <option value="Outro">Outro</option>
+                  <?php foreach ($aparelhos as $a): ?>
+                    <option value="<?= htmlspecialchars($a['nome']) ?>"
+                      <?= $sel_ap === $a['nome'] ? 'selected' : '' ?>>
+                      <?= htmlspecialchars($a['nome']) ?>
+                    </option>
+                  <?php endforeach; ?>
                 </select>
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalAparelhos" title="Gerenciar aparelhos">
+                  <i class="bi bi-gear"></i>
+                </button>
               </div>
             </div>
             <div class="col-md-3">
               <label class="form-label" for="marca">Marca</label>
               <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-tag-fill"></i></i></span>
+                <span class="input-group-text"><i class="bi bi-tag-fill"></i></span>
                 <select name="marca" id="marca" class="form-select">
                   <option value="">Selecione</option>
-                  <option value="Brastemp">Brastemp</option>
-                  <option value="Consul">Consul</option>
-                  <option value="Electrolux">Electrolux</option>
-                  <option value="Panasonic">Panasonic</option>
-                  <option value="Philco">Philco</option>
-                  <option value="Midea">Midea</option>
-                  <option value="Samsung">Samsung</option>
-                  <option value="Tcl">TCL</option>
-                  <option value="Semp">Semp</option>
-                  <option value="Lg">LG</option>
-                  <option value="Outro">Outro</option>
+                  <?php foreach ($marcas as $m): ?>
+                    <option value="<?= htmlspecialchars($m['nome']) ?>"
+                      <?= $sel_ma === $m['nome'] ? 'selected' : '' ?>>
+                      <?= htmlspecialchars($m['nome']) ?>
+                    </option>
+                  <?php endforeach; ?>
                 </select>
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalMarcas" title="Gerenciar marcas">
+                  <i class="bi bi-gear"></i>
+                </button>
               </div>
             </div>
 
@@ -238,13 +241,86 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
       </div>
     </div>
   </main>
-  <footer>
 
-  </footer>
+  <?php renderModalAparelho($aparelhos); ?>
+  <?php renderModalMarca($marcas); ?>
+
+  <div class="modal fade" id="modalEditar" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <form method="POST">
+          <div class="modal-header">
+            <h6 class="modal-title">Editar</h6>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" name="id" id="edit-id">
+            <input type="hidden" name="edit_action" id="edit-action">
+            <label class="form-label">Nome</label>
+            <input type="text" name="nome" id="edit-nome" class="form-control" required>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary btn-sm" id="edit-submit">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalConfirmarExclusao" tabindex="-1">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="modal-title">Confirmar Exclusão</h6>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p id="delete-message">Tem certeza que deseja excluir?</p>
+        </div>
+        <div class="modal-footer">
+          <form method="POST" id="delete-form">
+            <input type="hidden" name="id" id="delete-id">
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-danger btn-sm" id="delete-submit">Excluir</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer></footer>
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/total-calculation.js"></script>
   <script src="js/mask-phone.js"></script>
   <script src="js/mensagem-sucesso.js"></script>
+  <script>
+    document.querySelectorAll('.select-item').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.getElementById(this.dataset.target).value = this.dataset.value;
+      });
+    });
+    document.querySelectorAll('.edit-item').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.getElementById('edit-id').value = this.dataset.id;
+        document.getElementById('edit-nome').value = this.dataset.nome;
+        document.getElementById('edit-action').name = this.dataset.prefix + '_edit';
+        document.getElementById('edit-submit').name = this.dataset.prefix + '_edit';
+        var modal = new bootstrap.Modal(document.getElementById('modalEditar'));
+        modal.show();
+      });
+    });
+    document.querySelectorAll('.delete-item').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.getElementById('delete-id').value = this.dataset.id;
+        document.getElementById('delete-submit').name = this.dataset.prefix + '_delete';
+        document.getElementById('delete-message').innerHTML =
+          'Tem certeza que deseja excluir <strong>' + this.dataset.nome + '</strong>?';
+        var modal = new bootstrap.Modal(document.getElementById('modalConfirmarExclusao'));
+        modal.show();
+      });
+    });
+  </script>
 </body>
 
 </html>

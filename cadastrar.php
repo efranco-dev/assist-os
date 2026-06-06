@@ -59,7 +59,7 @@ try {
         ':status' => $status,
     ]);
     $_SESSION['sucesso'] = true;
-    header('Location:/');
+    header('Location:/assist-os/');
 } catch (PDOException $e) {
     echo "Ops! algo deu errado: " . $e->getMessage();
     exit();

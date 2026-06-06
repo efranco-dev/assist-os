@@ -59,7 +59,7 @@ try {
         ':id' => $id,
     ]);
     $_SESSION['sucesso'] = true;
-    header('Location:/editar.php?id=' . $id);
+    header('Location:/assist-os/editar.php?id=' . $id);
     exit();
 } catch (PDOException $e) {
     echo "Ops! algo deu errado: " . $e->getMessage();

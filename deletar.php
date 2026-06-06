@@ -5,14 +5,14 @@ require('conexao.php');
 try {
     $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
     if (!$id) {
-        header('Location:/lista-clientes.php');
+        header('Location:/assist-os/lista-clientes.php');
         exit();
     }
     $sql = "DELETE FROM `cadastro` WHERE id = :id";
     $statement = $pdo->prepare($sql);
     $statement->execute(['id' => $id]);
     $_SESSION['sucesso'] = true;
-    header('Location:/lista-clientes.php');
+    header('Location:/assist-os/lista-clientes.php');
     exit();
 
 } catch (PDOException $e) {

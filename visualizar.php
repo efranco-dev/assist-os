@@ -4,7 +4,7 @@ require('conexao.php');
 
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 if (!$id) {
-  header('Location:/');
+  header('Location:/assist-os/');
   exit();
 }
 
@@ -13,7 +13,7 @@ $statement = $pdo->prepare($sql);
 $statement->execute(['id' => $id]);
 $result = $statement->fetch(PDO::FETCH_ASSOC);
 if (!$result) {
-  header('Location:/');
+  header('Location:/assist-os/');
   exit();
 }
 ?>
