@@ -5,7 +5,9 @@ require('gerenciar_opcoes.php');
 
 $sel_ap = $_SESSION['sel_ap'] ?? '';
 $sel_ma = $_SESSION['sel_ma'] ?? '';
-unset($_SESSION['sel_ap'], $_SESSION['sel_ma']);
+$sel_st = $_SESSION['sel_st'] ?? '';
+$sel_ba = $_SESSION['sel_ba'] ?? '';
+unset($_SESSION['sel_ap'], $_SESSION['sel_ma'], $_SESSION['sel_st'], $_SESSION['sel_ba']);
 
 $sql = "SELECT * FROM `cadastro`";
 $statement = $pdo->query($sql);
@@ -21,49 +23,11 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="css/bootstrap-icons.min.css" rel="stylesheet" />
   <link href="css/bootstrap.min.css" rel="stylesheet" />
-  <link href="css/all.css" rel="stylesheet" />
   <link href="css/styles.css" rel="stylesheet" />
 </head>
 
 <body>
-  <header>
-    <div class="container d-flex align-items-center gap-3 py-3">
-      <div class="d-flex align-items-center justify-content-center rounded-3 text-white"
-        style="width:48px; height:48px; background:#1a3a5c; flex-shrink:0;">
-        <i class="bi bi-tools fs-4"></i>
-      </div>
-      <div>
-        <h1 class="h5 mb-0 fw-semibold">Assist-OS</h1>
-        <small class="text-muted fs-6">Assistência Técnica — Conserto de Microondas e TV em Geral - Rua 10 chácara 61
-          lote 9 loja 4 - Vicente Pires - DF</small>
-      </div>
-      <div class="ms-auto d-flex gap-2">
-        <a href="lista-clientes.php" class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1">
-          <i class="bi bi-people-fill"></i> Clientes
-        </a>
-        <a href="index.php" class="btn btn-sm text-white d-flex align-items-center gap-1" style="background:#1a3a5c;">
-          <i class="bi bi-person-fill-add"></i> Novo Cadastro
-        </a>
-      </div>
-    </div>
-    <div class="border-top bg-light">
-      <div class="container mb-3">
-        <nav class="nav">
-          <a href="index.php" class="nav-link active d-flex align-items-center gap-1 fw-medium nav-link:hover"
-            style="border-bottom: 2px solid #1a3a5c; color:#1a3a5c;">
-            <i class="bi bi-clipboard2-fill"></i> Cadastro de Clientes e Serviço
-          </a>
-          <a href="ordem-servico.php" class="nav-link text-muted d-flex align-items-center gap-1 nav-link:hover">
-            <i class="bi bi-clock-history"></i> Ordens de Serviço
-            <span class="badge rounded-pill text-white ms-1" style="background:#1a3a5c; font-size:10px;">12</span>
-          </a>
-          <a href="relatorios.php" class="nav-link text-muted d-flex align-items-center gap-1 nav-link:hover">
-            <i class="bi bi-bar-chart-fill"></i> Relatórios
-          </a>
-        </nav>
-      </div>
-    </div>
-  </header>
+  <?php require('header.php'); ?>
   <main class="container">
     <div class="card my-4 shadow-sm">
       <div class="card-header d-flex justify-content-between align-items-center">
@@ -102,13 +66,16 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
                 <span class="input-group-text"><i class="bi bi-cursor "></i></span>
                 <select name="bairro" id="bairro" class="form-select">
                   <option value="">Selecione</option>
-                  <option value="Vicente Pires">Vicente Pires</option>
-                  <option value="Águas Claras">Águas Claras</option>
-                  <option value="Ceilândia">Ceilândia</option>
-                  <option value="Taguatinga">Taguatinga</option>
-                  <option value="Samambaia">Samambaia</option>
-                  <option value="Outro">Outro</option>
+                  <?php foreach ($bairros as $b): ?>
+                    <option value="<?= htmlspecialchars($b['nome']) ?>"
+                      <?= $sel_ba === $b['nome'] ? 'selected' : '' ?>>
+                      <?= htmlspecialchars($b['nome']) ?>
+                    </option>
+                  <?php endforeach; ?>
                 </select>
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalBairros" title="Gerenciar bairros">
+                  <i class="bi bi-gear"></i>
+                </button>
               </div>
             </div>
 
@@ -216,19 +183,21 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
                 </div>
               </div>
               <div class="col-md-3">
-                <label class="form-label" for="status">status do Aparelho</label>
+                <label class="form-label" for="status">Status do Aparelho</label>
                 <div class="input-group">
                   <span class="input-group-text"><i class="bi bi-clipboard-check-fill"></i></span>
                   <select name="status" id="status" class="form-select">
                     <option value="">Selecione</option>
-                    <option value="Orçamento">Orçamento</option>
-                    <option value="Aguardando Autorização">Aguardando Autorização</option>
-                    <option value="Autorizado">Autorizado</option>
-                    <option value="Aguardando Peças">Aguardando Peças</option>
-                    <option value="Pronto">Pronto</option>
-                    <option value="Recusado">Recusado</option>
-                    <option value="Outro">Outro</option>
+                    <?php foreach ($status_opcoes as $s): ?>
+                      <option value="<?= htmlspecialchars($s['nome']) ?>"
+                        <?= $sel_st === $s['nome'] ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($s['nome']) ?>
+                      </option>
+                    <?php endforeach; ?>
                   </select>
+                  <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalStatus" title="Gerenciar status">
+                    <i class="bi bi-gear"></i>
+                  </button>
                 </div>
               </div>
 
@@ -244,6 +213,8 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
 
   <?php renderModalAparelho($aparelhos); ?>
   <?php renderModalMarca($marcas); ?>
+  <?php renderModalStatus($status_opcoes); ?>
+  <?php renderModalBairro($bairros); ?>
 
   <div class="modal fade" id="modalEditar" tabindex="-1">
     <div class="modal-dialog modal-sm">
@@ -291,6 +262,7 @@ $result = $statement->fetchAll((PDO::FETCH_ASSOC));
 
   <footer></footer>
   <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/theme.js"></script>
   <script src="js/total-calculation.js"></script>
   <script src="js/mask-phone.js"></script>
   <script src="js/mensagem-sucesso.js"></script>

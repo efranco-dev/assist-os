@@ -51,41 +51,7 @@ $aparelhos = $pdo->query("SELECT * FROM aparelhos ORDER BY nome")->fetchAll(PDO:
   <link href="css/styles.css" rel="stylesheet" />
 </head>
 <body>
-  <header>
-    <div class="container d-flex align-items-center gap-3 py-3">
-      <div class="d-flex align-items-center justify-content-center rounded-3 text-white"
-        style="width:48px; height:48px; background:#1a3a5c; flex-shrink:0;">
-        <i class="bi bi-tools fs-4"></i>
-      </div>
-      <div>
-        <h1 class="h5 mb-0 fw-semibold">Assist-OS</h1>
-        <small class="text-muted fs-6">Gerenciar Aparelhos</small>
-      </div>
-      <div class="ms-auto d-flex gap-2">
-        <a href="lista-clientes.php" class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1">
-          <i class="bi bi-people-fill"></i> Clientes
-        </a>
-        <a href="index.php" class="btn btn-sm text-white d-flex align-items-center gap-1" style="background:#1a3a5c;">
-          <i class="bi bi-person-fill-add"></i> Novo Cadastro
-        </a>
-      </div>
-    </div>
-    <div class="border-top bg-light">
-      <div class="container mb-3">
-        <nav class="nav">
-          <a href="index.php" class="nav-link text-muted d-flex align-items-center gap-1 nav-link:hover">
-            <i class="bi bi-clipboard2-fill"></i> Cadastro de Clientes e Serviço
-          </a>
-          <a href="ordem-servico.php" class="nav-link text-muted d-flex align-items-center gap-1 nav-link:hover">
-            <i class="bi bi-clock-history"></i> Ordens de Serviço
-          </a>
-          <a href="relatorios.php" class="nav-link text-muted d-flex align-items-center gap-1 nav-link:hover">
-            <i class="bi bi-bar-chart-fill"></i> Relatórios
-          </a>
-        </nav>
-      </div>
-    </div>
-  </header>
+  <?php require('header.php'); ?>
   <main class="container">
     <div class="card my-4 shadow-sm">
       <div class="card-header d-flex justify-content-between align-items-center">
@@ -179,6 +145,7 @@ $aparelhos = $pdo->query("SELECT * FROM aparelhos ORDER BY nome")->fetchAll(PDO:
 
   <footer></footer>
   <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/theme.js"></script>
   <script>
     document.getElementById('editarModal')?.addEventListener('show.bs.modal', function (e) {
       const btn = e.relatedTarget;

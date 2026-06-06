@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="pt-BR" data-bs-theme="light">
 <head>
-  <title>Relatórios - Assist-OS</title>
+  <title>Configs. - Assist-OS</title>
   <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -14,8 +14,8 @@
   <main class="container py-4">
     <div class="card shadow-sm border-0">
       <div class="card-body text-center py-5">
-        <i class="bi bi-bar-chart-fill fs-1 text-muted"></i>
-        <h4 class="mt-2">Relatórios</h4>
+        <i class="bi bi-gear fs-1 text-muted"></i>
+        <h4 class="mt-2">Configurações</h4>
         <p class="text-muted">Módulo em desenvolvimento.</p>
       </div>
     </div>
