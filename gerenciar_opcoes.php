@@ -8,7 +8,15 @@ if (isset($_POST['ap_add'])) {
         $stmt->execute([':nome' => $nome]);
         $_SESSION['sel_ap'] = $nome;
     }
-    header('Location: ' . $_SERVER['PHP_SELF']);
+    if (!empty($_POST['ajax'])) {
+        $items = $pdo->query("SELECT * FROM aparelhos ORDER BY nome")->fetchAll(PDO::FETCH_ASSOC);
+        ob_start();
+        renderModalAparelho($items);
+        $modalHtml = ob_get_clean();
+        echo json_encode(['success' => true, 'type' => 'aparelho', 'items' => $items, 'modalHtml' => $modalHtml]);
+        exit;
+    }
+    header('Location: ' . $_SERVER['REQUEST_URI']);
     exit();
 }
 if (isset($_POST['ap_edit'])) {
@@ -18,7 +26,15 @@ if (isset($_POST['ap_edit'])) {
         $stmt = $pdo->prepare("UPDATE aparelhos SET nome = :nome WHERE id = :id");
         $stmt->execute([':nome' => $nome, ':id' => $id]);
     }
-    header('Location: ' . $_SERVER['PHP_SELF']);
+    if (!empty($_POST['ajax'])) {
+        $items = $pdo->query("SELECT * FROM aparelhos ORDER BY nome")->fetchAll(PDO::FETCH_ASSOC);
+        ob_start();
+        renderModalAparelho($items);
+        $modalHtml = ob_get_clean();
+        echo json_encode(['success' => true, 'type' => 'aparelho', 'items' => $items, 'modalHtml' => $modalHtml]);
+        exit;
+    }
+    header('Location: ' . $_SERVER['REQUEST_URI']);
     exit();
 }
 if (isset($_POST['ap_delete'])) {
@@ -27,10 +43,17 @@ if (isset($_POST['ap_delete'])) {
         $stmt = $pdo->prepare("DELETE FROM aparelhos WHERE id = :id");
         $stmt->execute([':id' => $id]);
     }
-    header('Location: ' . $_SERVER['PHP_SELF']);
+    if (!empty($_POST['ajax'])) {
+        $items = $pdo->query("SELECT * FROM aparelhos ORDER BY nome")->fetchAll(PDO::FETCH_ASSOC);
+        ob_start();
+        renderModalAparelho($items);
+        $modalHtml = ob_get_clean();
+        echo json_encode(['success' => true, 'type' => 'aparelho', 'items' => $items, 'modalHtml' => $modalHtml]);
+        exit;
+    }
+    header('Location: ' . $_SERVER['REQUEST_URI']);
     exit();
 }
-
 if (isset($_POST['ma_add'])) {
     $nome = trim($_POST['nome'] ?? '');
     if ($nome) {
@@ -38,7 +61,15 @@ if (isset($_POST['ma_add'])) {
         $stmt->execute([':nome' => $nome]);
         $_SESSION['sel_ma'] = $nome;
     }
-    header('Location: ' . $_SERVER['PHP_SELF']);
+    if (!empty($_POST['ajax'])) {
+        $items = $pdo->query("SELECT * FROM marcas ORDER BY nome")->fetchAll(PDO::FETCH_ASSOC);
+        ob_start();
+        renderModalMarca($items);
+        $modalHtml = ob_get_clean();
+        echo json_encode(['success' => true, 'type' => 'marca', 'items' => $items, 'modalHtml' => $modalHtml]);
+        exit;
+    }
+    header('Location: ' . $_SERVER['REQUEST_URI']);
     exit();
 }
 if (isset($_POST['ma_edit'])) {
@@ -48,7 +79,15 @@ if (isset($_POST['ma_edit'])) {
         $stmt = $pdo->prepare("UPDATE marcas SET nome = :nome WHERE id = :id");
         $stmt->execute([':nome' => $nome, ':id' => $id]);
     }
-    header('Location: ' . $_SERVER['PHP_SELF']);
+    if (!empty($_POST['ajax'])) {
+        $items = $pdo->query("SELECT * FROM marcas ORDER BY nome")->fetchAll(PDO::FETCH_ASSOC);
+        ob_start();
+        renderModalMarca($items);
+        $modalHtml = ob_get_clean();
+        echo json_encode(['success' => true, 'type' => 'marca', 'items' => $items, 'modalHtml' => $modalHtml]);
+        exit;
+    }
+    header('Location: ' . $_SERVER['REQUEST_URI']);
     exit();
 }
 if (isset($_POST['ma_delete'])) {
@@ -57,10 +96,17 @@ if (isset($_POST['ma_delete'])) {
         $stmt = $pdo->prepare("DELETE FROM marcas WHERE id = :id");
         $stmt->execute([':id' => $id]);
     }
-    header('Location: ' . $_SERVER['PHP_SELF']);
+    if (!empty($_POST['ajax'])) {
+        $items = $pdo->query("SELECT * FROM marcas ORDER BY nome")->fetchAll(PDO::FETCH_ASSOC);
+        ob_start();
+        renderModalMarca($items);
+        $modalHtml = ob_get_clean();
+        echo json_encode(['success' => true, 'type' => 'marca', 'items' => $items, 'modalHtml' => $modalHtml]);
+        exit;
+    }
+    header('Location: ' . $_SERVER['REQUEST_URI']);
     exit();
 }
-
 if (isset($_POST['st_add'])) {
     $nome = trim($_POST['nome'] ?? '');
     if ($nome) {
@@ -68,7 +114,15 @@ if (isset($_POST['st_add'])) {
         $stmt->execute([':nome' => $nome]);
         $_SESSION['sel_st'] = $nome;
     }
-    header('Location: ' . $_SERVER['PHP_SELF']);
+    if (!empty($_POST['ajax'])) {
+        $items = $pdo->query("SELECT * FROM status_opcoes ORDER BY nome")->fetchAll(PDO::FETCH_ASSOC);
+        ob_start();
+        renderModalStatus($items);
+        $modalHtml = ob_get_clean();
+        echo json_encode(['success' => true, 'type' => 'status', 'items' => $items, 'modalHtml' => $modalHtml]);
+        exit;
+    }
+    header('Location: ' . $_SERVER['REQUEST_URI']);
     exit();
 }
 if (isset($_POST['st_edit'])) {
@@ -78,7 +132,15 @@ if (isset($_POST['st_edit'])) {
         $stmt = $pdo->prepare("UPDATE status_opcoes SET nome = :nome WHERE id = :id");
         $stmt->execute([':nome' => $nome, ':id' => $id]);
     }
-    header('Location: ' . $_SERVER['PHP_SELF']);
+    if (!empty($_POST['ajax'])) {
+        $items = $pdo->query("SELECT * FROM status_opcoes ORDER BY nome")->fetchAll(PDO::FETCH_ASSOC);
+        ob_start();
+        renderModalStatus($items);
+        $modalHtml = ob_get_clean();
+        echo json_encode(['success' => true, 'type' => 'status', 'items' => $items, 'modalHtml' => $modalHtml]);
+        exit;
+    }
+    header('Location: ' . $_SERVER['REQUEST_URI']);
     exit();
 }
 if (isset($_POST['st_delete'])) {
@@ -87,10 +149,17 @@ if (isset($_POST['st_delete'])) {
         $stmt = $pdo->prepare("DELETE FROM status_opcoes WHERE id = :id");
         $stmt->execute([':id' => $id]);
     }
-    header('Location: ' . $_SERVER['PHP_SELF']);
+    if (!empty($_POST['ajax'])) {
+        $items = $pdo->query("SELECT * FROM status_opcoes ORDER BY nome")->fetchAll(PDO::FETCH_ASSOC);
+        ob_start();
+        renderModalStatus($items);
+        $modalHtml = ob_get_clean();
+        echo json_encode(['success' => true, 'type' => 'status', 'items' => $items, 'modalHtml' => $modalHtml]);
+        exit;
+    }
+    header('Location: ' . $_SERVER['REQUEST_URI']);
     exit();
 }
-
 if (isset($_POST['ba_add'])) {
     $nome = trim($_POST['nome'] ?? '');
     if ($nome) {
@@ -98,7 +167,15 @@ if (isset($_POST['ba_add'])) {
         $stmt->execute([':nome' => $nome]);
         $_SESSION['sel_ba'] = $nome;
     }
-    header('Location: ' . $_SERVER['PHP_SELF']);
+    if (!empty($_POST['ajax'])) {
+        $items = $pdo->query("SELECT * FROM bairros ORDER BY nome")->fetchAll(PDO::FETCH_ASSOC);
+        ob_start();
+        renderModalBairro($items);
+        $modalHtml = ob_get_clean();
+        echo json_encode(['success' => true, 'type' => 'bairro', 'items' => $items, 'modalHtml' => $modalHtml]);
+        exit;
+    }
+    header('Location: ' . $_SERVER['REQUEST_URI']);
     exit();
 }
 if (isset($_POST['ba_edit'])) {
@@ -108,7 +185,15 @@ if (isset($_POST['ba_edit'])) {
         $stmt = $pdo->prepare("UPDATE bairros SET nome = :nome WHERE id = :id");
         $stmt->execute([':nome' => $nome, ':id' => $id]);
     }
-    header('Location: ' . $_SERVER['PHP_SELF']);
+    if (!empty($_POST['ajax'])) {
+        $items = $pdo->query("SELECT * FROM bairros ORDER BY nome")->fetchAll(PDO::FETCH_ASSOC);
+        ob_start();
+        renderModalBairro($items);
+        $modalHtml = ob_get_clean();
+        echo json_encode(['success' => true, 'type' => 'bairro', 'items' => $items, 'modalHtml' => $modalHtml]);
+        exit;
+    }
+    header('Location: ' . $_SERVER['REQUEST_URI']);
     exit();
 }
 if (isset($_POST['ba_delete'])) {
@@ -117,7 +202,15 @@ if (isset($_POST['ba_delete'])) {
         $stmt = $pdo->prepare("DELETE FROM bairros WHERE id = :id");
         $stmt->execute([':id' => $id]);
     }
-    header('Location: ' . $_SERVER['PHP_SELF']);
+    if (!empty($_POST['ajax'])) {
+        $items = $pdo->query("SELECT * FROM bairros ORDER BY nome")->fetchAll(PDO::FETCH_ASSOC);
+        ob_start();
+        renderModalBairro($items);
+        $modalHtml = ob_get_clean();
+        echo json_encode(['success' => true, 'type' => 'bairro', 'items' => $items, 'modalHtml' => $modalHtml]);
+        exit;
+    }
+    header('Location: ' . $_SERVER['REQUEST_URI']);
     exit();
 }
 
@@ -140,7 +233,7 @@ function renderModalAparelho($aparelhos) {
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <form method="POST" class="input-group mb-3">
+        <form method="POST" class="input-group mb-3" id="addAparelhoForm">
           <input type="text" name="nome" class="form-control" placeholder="Novo aparelho..." required>
           <button type="submit" name="ap_add" class="btn btn-success"><i class="bi bi-plus-lg"></i> Adicionar</button>
         </form>
@@ -190,7 +283,7 @@ function renderModalStatus($status_opcoes) {
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <form method="POST" class="input-group mb-3">
+        <form method="POST" class="input-group mb-3" id="addStatusForm">
           <input type="text" name="nome" class="form-control" placeholder="Novo status..." required>
           <button type="submit" name="st_add" class="btn btn-success"><i class="bi bi-plus-lg"></i> Adicionar</button>
         </form>
@@ -240,7 +333,7 @@ function renderModalBairro($bairros) {
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <form method="POST" class="input-group mb-3">
+        <form method="POST" class="input-group mb-3" id="addBairroForm">
           <input type="text" name="nome" class="form-control" placeholder="Novo bairro..." required>
           <button type="submit" name="ba_add" class="btn btn-success"><i class="bi bi-plus-lg"></i> Adicionar</button>
         </form>
@@ -290,7 +383,7 @@ function renderModalMarca($marcas) {
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <form method="POST" class="input-group mb-3">
+        <form method="POST" class="input-group mb-3" id="addMarcaForm">
           <input type="text" name="nome" class="form-control" placeholder="Nova marca..." required>
           <button type="submit" name="ma_add" class="btn btn-success"><i class="bi bi-plus-lg"></i> Adicionar</button>
         </form>
