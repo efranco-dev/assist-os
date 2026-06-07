@@ -1,67 +1,39 @@
 <?php
-
-require('conexao.php');
 session_start();
+require('conexao.php');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location:/');
+    header('Location: clientes.php');
     exit();
 }
 
-$nome = filter_input(INPUT_POST, 'nome', FILTER_DEFAULT);
-$endereco = filter_input(INPUT_POST, 'endereco', FILTER_DEFAULT);
-$telefone = filter_input(INPUT_POST, 'telefone', FILTER_DEFAULT);
-$aparelho = filter_input(INPUT_POST, 'aparelho', FILTER_DEFAULT);
-$marca = filter_input(INPUT_POST, 'marca', FILTER_DEFAULT);
-$modelo = filter_input(INPUT_POST, 'modelo', FILTER_DEFAULT);
-$defeito = filter_input(INPUT_POST, 'defeito', FILTER_DEFAULT);
-$servico = filter_input(INPUT_POST, 'servico', FILTER_DEFAULT);
-$observacoes = filter_input(INPUT_POST, 'observacoes', FILTER_DEFAULT);
-$bairro = filter_input(INPUT_POST, 'bairro', FILTER_DEFAULT);
-$valor_servico = filter_input(INPUT_POST, 'valor_servico', FILTER_DEFAULT);
-$desconto = filter_input(INPUT_POST, 'desconto', FILTER_DEFAULT);
-$total = filter_input(INPUT_POST, 'valor_total', FILTER_DEFAULT);
-$status = filter_input(INPUT_POST, 'status', FILTER_DEFAULT);
+$nome     = trim(filter_input(INPUT_POST, 'nome', FILTER_DEFAULT) ?? '');
+$endereco = trim(filter_input(INPUT_POST, 'endereco', FILTER_DEFAULT) ?? '');
+$bairro   = trim(filter_input(INPUT_POST, 'bairro', FILTER_DEFAULT) ?? '');
+$telefone = trim(filter_input(INPUT_POST, 'telefone', FILTER_DEFAULT) ?? '');
 
-function parseCurrency($value) {
-    $value = trim($value);
-    if ($value === '') {
-        return null;
-    }
-    $value = str_replace(['.', ','], ['', '.'], $value);
-    return is_numeric($value) ? $value : null;
-}
-
-$valor_servico = parseCurrency($valor_servico);
-$desconto = parseCurrency($desconto);
-$total = parseCurrency($total);
-
-try {
-    $data_entrada = date('Y-m-d H:i:s');
-    $sql = "INSERT INTO `cadastro`(nome, aparelho, marca, modelo, defeito, servico, observacoes, endereco,bairro, telefone, data_entrada, valor_servico, desconto, valor_total, status)
-     VALUES(:nome, :aparelho, :marca, :modelo, :defeito, :servico, :observacoes, :endereco, :bairro, :telefone, :data_entrada, :valor_servico, :desconto, :valor_total, :status)";
-    $statement = $pdo->prepare($sql);
-    $statement->execute([
-        ':nome' => $nome,
-        ':aparelho' => $aparelho,
-        ':marca' => $marca,
-        ':modelo' => $modelo,
-        ':defeito' => $defeito,
-        ':servico' => $servico,
-        ':observacoes' => $observacoes,
-        ':endereco' => $endereco,
-        ':bairro' => $bairro,
-        ':telefone' => $telefone,
-        ':data_entrada' => $data_entrada,
-        ':valor_servico' => $valor_servico,
-        ':desconto' => $desconto,
-        ':valor_total' => $total,
-        ':status' => $status,
-    ]);
-    $_SESSION['sucesso'] = true;
-    header('Location:/');
-} catch (PDOException $e) {
-    echo "Ops! algo deu errado: " . $e->getMessage();
+if (!$nome) {
+    $_SESSION['sucesso_cliente'] = 'Nome é obrigatório.';
+    header('Location: index.php');
     exit();
 }
 
+$stmt = $pdo->prepare("INSERT INTO clientes (nome, endereco, bairro, telefone) VALUES (:nome, :endereco, :bairro, :telefone)");
+$stmt->execute([
+    ':nome' => $nome,
+    ':endereco' => $endereco,
+    ':bairro' => $bairro,
+    ':telefone' => $telefone,
+]);
+
+$cliente_id = $pdo->lastInsertId();
+$_SESSION['sucesso_cliente'] = 'Cliente cadastrado com sucesso!';
+
+// If came from OS creation flow, redirect back to OS page with the new client
+$redirect = $_POST['redirect'] ?? 'clientes.php';
+if ($redirect === 'os-nova.php') {
+    header("Location: os-nova.php?cliente_id=$cliente_id");
+} else {
+    header('Location: index.php');
+}
+exit();

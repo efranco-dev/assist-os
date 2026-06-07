@@ -1,159 +1,154 @@
 <?php
-
 require('conexao.php');
 
-$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-if (!$id) {
-  header('Location:/');
-  exit();
-}
+$cliente_id = filter_input(INPUT_GET, 'cliente_id', FILTER_VALIDATE_INT);
+$os_id      = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
-$sql = "SELECT * FROM `cadastro` WHERE id = :id";
-$statement = $pdo->prepare($sql);
-$statement->execute(['id' => $id]);
-$result = $statement->fetch(PDO::FETCH_ASSOC);
-if (!$result) {
-  header('Location:/');
-  exit();
-}
-?>
+if ($cliente_id) {
+    $stmt = $pdo->prepare("SELECT * FROM clientes WHERE id = :id");
+    $stmt->execute([':id' => $cliente_id]);
+    $cliente = $stmt->fetch();
+    if (!$cliente) { header('Location: clientes.php'); exit(); }
 
-<!doctype html>
-<html lang="pt-BR" data-bs-theme="light">
-
-<head>
-  <title>Visualizar</title>
-  <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="css/bootstrap-icons.min.css" rel="stylesheet" />
-  <link href="css/bootstrap.min.css" rel="stylesheet" />
-  <link href="css/all.css" rel="stylesheet" />
-  <link href="css/styles.css" rel="stylesheet" />
-</head>
-
-<body>
-  <header>
-    <!-- Barra da marca -->
-    <div class="container d-flex align-items-center gap-3 py-3">
-      <div class="d-flex align-items-center justify-content-center rounded-3 text-white"
-        style="width:48px; height:48px; background:#1a3a5c; flex-shrink:0;">
-        <i class="bi bi-tools fs-4"></i>
-      </div>
-      <div>
-        <h1 class="h5 mb-0 fw-semibold">Assist-OS</h1>
-        <small class="text-muted fs-6">Assistência Técnica — Conserto de Microondas e TV em Geral - Rua 10 chácara 61
-          lote 9 loja 4 - Vicente Pires - DF</small>
-      </div>
-      <div class="ms-auto d-flex gap-2">
-        <a href="lista-clientes.php" class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1">
-          <i class="bi bi-people-fill"></i> Clientes
-        </a>
-        <a href="index.php" class="btn btn-sm text-white d-flex align-items-center gap-1" style="background:#1a3a5c;">
-          <i class="bi bi-person-fill-add"></i> Novo Cadastro
-        </a>
-      </div>
-    </div>
-
-    <!-- Navegação -->
-    <div class="border-top bg-light">
-      <div class="container">
-        <nav class="nav">
-          <a href="index.php" class="nav-link active d-flex align-items-center gap-1 fw-medium"
-            style="border-bottom: 2px solid #1a3a5c; color:#1a3a5c;">
-            <i class="bi bi-clipboard2-fill"></i> Cadastro de Clientes e Serviço
-          </a>
-          <a href="ordem-servico.php" class="nav-link text-muted d-flex align-items-center gap-1">
-            <i class="bi bi-clock-history"></i> Ordens de Serviço
-            <span class="badge rounded-pill text-white ms-1" style="background:#1a3a5c; font-size:10px;">12</span>
-          </a>
-          <a href="relatorios.php" class="nav-link text-muted d-flex align-items-center gap-1">
-            <i class="bi bi-bar-chart-fill"></i> Relatórios
-          </a>
-        </nav>
-      </div>
-    </div>
-  </header>
-  <main class="container py-4">
-    <div class="card shadow-sm border-0">
-      <div
-        class="card-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
-        <div>
-          <h4 class="mb-1">Dados do cadastro</h4>
-          <small class="text-muted"><i class="bi bi-clock-fill"></i>
-            <?= date('d/m/Y H:i', strtotime($result['data_entrada'])) ?></small>
+    $ordens = $pdo->prepare("SELECT * FROM ordens_servico WHERE cliente_id = :id ORDER BY data_entrada DESC");
+    $ordens->execute([':id' => $cliente_id]);
+    $ordens_list = $ordens->fetchAll();
+    ?>
+    <!doctype html>
+    <html lang="pt-BR" data-bs-theme="light">
+    <head>
+      <title><?= htmlspecialchars($cliente['nome']) ?> - Assist-OS</title>
+      <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link href="css/bootstrap-icons.min.css" rel="stylesheet" />
+      <link href="css/bootstrap.min.css" rel="stylesheet" />
+      <link href="css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+      <?php require('header.php'); ?>
+      <main class="container py-3">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="fw-semibold mb-0"><?= htmlspecialchars($cliente['nome']) ?></h5>
+          <a href="clientes.php" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i> Voltar</a>
         </div>
-        <a href="/" class="btn btn-danger btn-sm"><i class="bi bi-box-arrow-left"></i> Voltar</a>
-      </div>
-      <div class="card-body">
-        <div class="row gx-4">
-          <div class="col-12 col-md-6">
-            <div class="list-group list-group-flush">
-              <div class="list-group-item px-0 py-2 border-bottom">
-                <span class="text-secondary"><i class="bi bi-person-fill me-1"></i> Nome:</span>
-                <span class="fw-semibold"> <?= $result['nome'] ?></span>
-              </div>
-              <div class="list-group-item px-0 py-2 border-bottom">
-                <span class="text-secondary"><i class="bi bi-geo-alt-fill me-1"></i> Endereço:</span>
-                <span class="fw-semibold"> <?= $result['endereco'] ?></span>
-              </div>
-              <div class="list-group-item px-0 py-2 border-bottom">
-                <span class="text-secondary"><i class="bi bi-cursor me-1"></i> Bairro:</span>
-                <span class="fw-semibold"> <?= $result['bairro'] ?></span>
-              </div>
-              <div class="list-group-item px-0 py-2 border-bottom">
-                <span class="text-secondary"><i class="bi bi-telephone-fill me-1"></i> Telefone:</span>
-                <span class="fw-semibold"> <?= $result['telefone'] ?></span>
-              </div>
-              <div class="list-group-item px-0 py-2 border-bottom">
-                <span class="text-secondary"><i class="bi bi-phone-fill me-1"></i> Aparelho:</span>
-                <span class="fw-semibold"> <?= $result['aparelho'] ?></span>
-              </div>
-              <div class="list-group-item px-0 py-2 border-bottom">
-                <span class="text-secondary"><i class="bi bi-tag-fill me-1"></i> Marca:</span>
-                <span class="fw-semibold"> <?= $result['marca'] ?></span>
-              </div>
-              <div class="list-group-item px-0 py-2 border-bottom">
-                <span class="text-secondary"><i class="bi bi-box-seam me-1"></i> Modelo:</span>
-                <span class="fw-semibold"> <?= $result['modelo'] ?></span>
+        <div class="card shadow-sm border mb-3">
+          <div class="card-header bg-transparent fw-semibold small py-2">Dados do Cliente</div>
+          <div class="card-body">
+            <table class="table table-sm mb-0">
+              <tr><td class="text-muted small" style="width:100px">Nome</td><td class="fw-medium"><?= htmlspecialchars($cliente['nome']) ?></td></tr>
+              <tr><td class="text-muted small">Endereço</td><td><?= htmlspecialchars($cliente['endereco']) ?></td></tr>
+              <tr><td class="text-muted small">Bairro</td><td><?= htmlspecialchars($cliente['bairro']) ?></td></tr>
+              <tr><td class="text-muted small">Telefone</td><td><?= htmlspecialchars($cliente['telefone']) ?></td></tr>
+              <tr><td class="text-muted small">Cliente desde</td><td><?= date('d/m/Y', strtotime($cliente['data_cadastro'])) ?></td></tr>
+            </table>
+          </div>
+        </div>
+        <h6 class="fw-semibold mb-2">Ordens de Serviço</h6>
+        <?php if (empty($ordens_list)): ?>
+          <p class="text-muted small"><i class="bi bi-inbox"></i> Nenhuma OS para este cliente.</p>
+        <?php else: ?>
+          <div class="table-responsive">
+            <table class="table table-sm table-hover align-middle">
+              <thead class="table-light">
+                <tr><th>#</th><th>Aparelho</th><th>Status</th><th>Valor</th><th>Data</th><th>Ações</th></tr>
+              </thead>
+              <tbody>
+                <?php foreach ($ordens_list as $o): ?>
+                  <tr>
+                    <td class="text-muted"><?= $o['id'] ?></td>
+                    <td><?= htmlspecialchars($o['aparelho']) ?></td>
+                    <td><span class="badge rounded-pill bg-secondary"><?= htmlspecialchars($o['status'] ?: '—') ?></span></td>
+                    <td><?= $o['valor_total'] ? 'R$ '.number_format($o['valor_total'], 2, ',', '.') : '—' ?></td>
+                    <td class="small text-muted"><?= date('d/m/Y', strtotime($o['data_entrada'])) ?></td>
+                    <td>
+                      <a href="visualizar.php?id=<?= $o['id'] ?>" class="btn btn-sm btn-outline-primary" title="Ver"><i class="bi bi-eye"></i></a>
+                      <a href="editar.php?id=<?= $o['id'] ?>" class="btn btn-sm btn-outline-warning" title="Editar"><i class="bi bi-pencil"></i></a>
+                    </td>
+                  </tr>
+                <?php endforeach; ?>
+              </tbody>
+            </table>
+          </div>
+        <?php endif; ?>
+      </main>
+      <script src="js/bootstrap.bundle.min.js"></script>
+      <script src="js/theme.js"></script>
+    </body>
+    </html>
+<?php
+} elseif ($os_id) {
+    $stmt = $pdo->prepare("
+        SELECT os.*, c.nome as cliente_nome, c.endereco as cliente_endereco,
+               c.bairro as cliente_bairro, c.telefone as cliente_telefone
+        FROM ordens_servico os
+        JOIN clientes c ON c.id = os.cliente_id
+        WHERE os.id = :id
+    ");
+    $stmt->execute([':id' => $os_id]);
+    $os = $stmt->fetch();
+    if (!$os) { header('Location: ordem-servico.php'); exit(); }
+    ?>
+    <!doctype html>
+    <html lang="pt-BR" data-bs-theme="light">
+    <head>
+      <title>OS #<?= $os['id'] ?> - Assist-OS</title>
+      <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link href="css/bootstrap-icons.min.css" rel="stylesheet" />
+      <link href="css/bootstrap.min.css" rel="stylesheet" />
+      <link href="css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+      <?php require('header.php'); ?>
+      <main class="container py-3">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="fw-semibold mb-0">OS #<?= $os['id'] ?></h5>
+          <a href="ordem-servico.php" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i> Voltar</a>
+        </div>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="card shadow-sm border h-100">
+              <div class="card-header bg-transparent fw-semibold small py-2">Dados do Cliente</div>
+              <div class="card-body">
+                <table class="table table-sm mb-0">
+                  <tr><td class="text-muted small" style="width:100px">Nome</td><td class="fw-medium"><?= htmlspecialchars($os['cliente_nome']) ?></td></tr>
+                  <tr><td class="text-muted small">Endereço</td><td><?= htmlspecialchars($os['cliente_endereco']) ?></td></tr>
+                  <tr><td class="text-muted small">Bairro</td><td><?= htmlspecialchars($os['cliente_bairro']) ?></td></tr>
+                  <tr><td class="text-muted small">Telefone</td><td><?= htmlspecialchars($os['cliente_telefone']) ?></td></tr>
+                </table>
               </div>
             </div>
           </div>
-          <div class="col-12 col-md-6">
-            <div class="list-group list-group-flush">
-              <div class="list-group-item px-0 py-2 border-bottom">
-                <span class="text-secondary"><i class="bi bi-bug-fill me-1"></i> Defeito:</span>
-                <span class="fw-semibold"> <?= $result['defeito'] ?></span>
-              </div>
-              <div class="list-group-item px-0 py-2 border-bottom">
-                <span class="text-secondary"><i class="bi bi-hammer me-1"></i> Serviço Executado:</span>
-                <span class="fw-semibold"> <?= $result['servico'] ?></span>
-              </div>
-              <div class="list-group-item px-0 py-2 border-bottom">
-                <span class="text-secondary"><i class="bi bi-cash-stack me-1"></i> Valor do Serviço:</span>
-                <span class="fw-semibold"> <?= number_format($result['valor_servico'], 2, ',', '.') ?></span>
-              </div>
-              <div class="list-group-item px-0 py-2 border-bottom">
-                <span class="text-secondary"><i class="bi bi-percent me-1"></i> Desconto:</span>
-                <span class="fw-semibold"> <?= number_format($result['desconto'], 2, ',', '.') ?></span>
-              </div>
-              <div class="list-group-item px-0 py-2 border-bottom">
-                <span class="text-secondary"><i class="bi bi-calculator-fill me-1"></i> Valor Total:</span>
-                <span class="fw-semibold"> <?= number_format($result['valor_total'], 2, ',', '.') ?></span>
-              </div>
-              <div class="list-group-item px-0 py-2 border-bottom">
-                <span class="text-secondary"><i class="bi bi-chat-text-fill me-1"></i> Observações:</span>
-                <span class="fw-semibold d-block mt-1"> <?= nl2br(htmlspecialchars($result['observacoes'])) ?></span>
+          <div class="col-md-6">
+            <div class="card shadow-sm border h-100">
+              <div class="card-header bg-transparent fw-semibold small py-2">Dados do Serviço</div>
+              <div class="card-body">
+                <table class="table table-sm mb-0">
+                  <tr><td class="text-muted small" style="width:110px">Aparelho</td><td><?= htmlspecialchars($os['aparelho']) ?></td></tr>
+                  <tr><td class="text-muted small">Marca</td><td><?= htmlspecialchars($os['marca']) ?></td></tr>
+                  <tr><td class="text-muted small">Modelo</td><td><?= htmlspecialchars($os['modelo']) ?></td></tr>
+                  <tr><td class="text-muted small">Status</td><td><?= htmlspecialchars($os['status'] ?: '—') ?></td></tr>
+                  <tr><td class="text-muted small">Defeito</td><td><?= nl2br(htmlspecialchars($os['defeito'])) ?></td></tr>
+                  <tr><td class="text-muted small">Serviço</td><td><?= nl2br(htmlspecialchars($os['servico'])) ?></td></tr>
+                  <tr><td class="text-muted small">Observações</td><td><?= nl2br(htmlspecialchars($os['observacoes'])) ?></td></tr>
+                  <tr><td class="text-muted small">Valor Serviço</td><td>R$ <?= number_format($os['valor_servico'] ?? 0, 2, ',', '.') ?></td></tr>
+                  <tr><td class="text-muted small">Desconto</td><td>R$ <?= number_format($os['desconto'] ?? 0, 2, ',', '.') ?></td></tr>
+                  <tr><td class="text-muted small">Valor Total</td><td class="fw-bold">R$ <?= number_format($os['valor_total'] ?? 0, 2, ',', '.') ?></td></tr>
+                  <tr><td class="text-muted small">Data</td><td><?= date('d/m/Y H:i', strtotime($os['data_entrada'])) ?></td></tr>
+                </table>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </main>
-  <footer>
-  </footer>
-  <script src="js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+      </main>
+      <script src="js/bootstrap.bundle.min.js"></script>
+      <script src="js/theme.js"></script>
+    </body>
+    </html>
+<?php
+} else {
+    header('Location: ordem-servico.php');
+    exit();
+}
