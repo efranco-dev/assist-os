@@ -7,23 +7,35 @@ if (!isset($_SESSION['logado']) || !$_SESSION['logado']) {
 require('conexao.php');
 require('gerenciar_opcoes.php');
 
-$sel_ap = $_SESSION['sel_ap'] ?? '';
-$sel_ma = $_SESSION['sel_ma'] ?? '';
-$sel_st = $_SESSION['sel_st'] ?? '';
-$sel_ba = $_SESSION['sel_ba'] ?? '';
-unset($_SESSION['sel_ap'], $_SESSION['sel_ma'], $_SESSION['sel_st'], $_SESSION['sel_ba']);
-
-$nome_edit     = $_GET['nome'] ?? '';
-$endereco_edit = $_GET['endereco'] ?? '';
-$bairro_edit   = $_GET['bairro'] ?? '';
-$telefone_edit = $_GET['telefone'] ?? '';
-
 $bairros = $pdo->query("SELECT * FROM bairros ORDER BY nome")->fetchAll(PDO::FETCH_ASSOC);
+
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+if (!$id) { header('Location: clientes.php'); exit(); }
+
+$stmt = $pdo->prepare("SELECT * FROM clientes WHERE id = :id");
+$stmt->execute([':id' => $id]);
+$cliente = $stmt->fetch();
+if (!$cliente) { header('Location: clientes.php'); exit(); }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nome     = trim(filter_input(INPUT_POST, 'nome', FILTER_DEFAULT) ?? '');
+    $endereco = trim(filter_input(INPUT_POST, 'endereco', FILTER_DEFAULT) ?? '');
+    $bairro   = trim(filter_input(INPUT_POST, 'bairro', FILTER_DEFAULT) ?? '');
+    $telefone = trim(filter_input(INPUT_POST, 'telefone', FILTER_DEFAULT) ?? '');
+
+    if ($nome) {
+        $upd = $pdo->prepare("UPDATE clientes SET nome=:nome, endereco=:endereco, bairro=:bairro, telefone=:telefone WHERE id=:id");
+        $upd->execute([':nome'=>$nome, ':endereco'=>$endereco, ':bairro'=>$bairro, ':telefone'=>$telefone, ':id'=>$id]);
+        $_SESSION['sucesso_cliente'] = 'Cliente atualizado.';
+        header('Location: clientes.php');
+        exit();
+    }
+}
 ?>
 <!doctype html>
 <html lang="pt-BR" data-bs-theme="light">
 <head>
-  <title>Novo Cliente - Assist-OS</title>
+  <title>Editar Cliente - Assist-OS</title>
   <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -35,26 +47,16 @@ $bairros = $pdo->query("SELECT * FROM bairros ORDER BY nome")->fetchAll(PDO::FET
   <?php require('header.php'); ?>
   <main class="container py-3">
     <div class="card shadow-sm border" style="max-width:600px">
-      <div class="card-header bg-transparent fw-semibold">
-        <i class="bi bi-person-plus-fill"></i> Novo Cliente
-      </div>
+      <div class="card-header bg-transparent fw-semibold"><i class="bi bi-pencil"></i> Editar Cliente</div>
       <div class="card-body">
-        <?php if (isset($_SESSION['sucesso_cliente'])): ?>
-          <div class="alert alert-success alert-dismissible fade show py-2 small">
-            <i class="bi bi-check-circle-fill"></i> <?= $_SESSION['sucesso_cliente'] ?>
-            <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert"></button>
-          </div>
-          <?php unset($_SESSION['sucesso_cliente']); ?>
-        <?php endif; ?>
-
-        <form action="cadastrar.php" method="post">
+        <form method="POST">
           <div class="mb-2">
             <label class="form-label small">Nome</label>
-            <input type="text" name="nome" class="form-control form-control-sm" required value="<?= htmlspecialchars($nome_edit) ?>">
+            <input type="text" name="nome" class="form-control form-control-sm" required value="<?= htmlspecialchars($cliente['nome']) ?>">
           </div>
           <div class="mb-2">
             <label class="form-label small">Endereço</label>
-            <input type="text" name="endereco" class="form-control form-control-sm" value="<?= htmlspecialchars($endereco_edit) ?>">
+            <input type="text" name="endereco" class="form-control form-control-sm" value="<?= htmlspecialchars($cliente['endereco']) ?>">
           </div>
           <div class="row g-2 mb-2">
             <div class="col">
@@ -63,8 +65,7 @@ $bairros = $pdo->query("SELECT * FROM bairros ORDER BY nome")->fetchAll(PDO::FET
                 <select name="bairro" id="bairro" class="form-select">
                   <option value="">Selecione</option>
                   <?php foreach ($bairros as $b): ?>
-                    <option value="<?= htmlspecialchars($b['nome']) ?>"
-                      <?= $sel_ba === $b['nome'] ? 'selected' : ($bairro_edit === $b['nome'] && !$sel_ba ? 'selected' : '') ?>>
+                    <option value="<?= htmlspecialchars($b['nome']) ?>" <?= $cliente['bairro'] === $b['nome'] ? 'selected' : '' ?>>
                       <?= htmlspecialchars($b['nome']) ?>
                     </option>
                   <?php endforeach; ?>
@@ -74,7 +75,7 @@ $bairros = $pdo->query("SELECT * FROM bairros ORDER BY nome")->fetchAll(PDO::FET
             </div>
             <div class="col">
               <label class="form-label small">Telefone</label>
-              <input type="text" name="telefone" class="form-control form-control-sm phone-mask" value="<?= htmlspecialchars($telefone_edit) ?>">
+              <input type="text" name="telefone" class="form-control form-control-sm phone-mask" value="<?= htmlspecialchars($cliente['telefone']) ?>">
             </div>
           </div>
           <hr class="my-3">
@@ -129,7 +130,8 @@ $bairros = $pdo->query("SELECT * FROM bairros ORDER BY nome")->fetchAll(PDO::FET
   <script>
     document.querySelectorAll('.select-item').forEach(function(btn) {
       btn.addEventListener('click', function() {
-        document.getElementById(this.dataset.target).value = this.dataset.value;
+        var el = document.getElementById(this.dataset.target);
+        if (el) el.value = this.dataset.value;
       });
     });
     document.querySelectorAll('.edit-item').forEach(function(btn) {
