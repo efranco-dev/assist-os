@@ -4,7 +4,7 @@
 > Cada etapa é um degrau — termine uma antes de ir para a próxima.
 
 ---
-
+---
 ## Antes de começar
 
 ### O que você precisa instalar

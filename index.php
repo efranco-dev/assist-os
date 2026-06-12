@@ -91,7 +91,7 @@ $bairros = $pdo->query("SELECT * FROM bairros ORDER BY nome")->fetchAll(PDO::FET
   <div class="modal fade" id="modalEditar" tabindex="-1">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
-        <form method="POST">
+        <form method="POST" id="editForm">
           <div class="modal-header"><h6 class="modal-title">Editar</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
           <div class="modal-body">
             <input type="hidden" name="id" id="edit-id">
@@ -113,7 +113,7 @@ $bairros = $pdo->query("SELECT * FROM bairros ORDER BY nome")->fetchAll(PDO::FET
         <div class="modal-header"><h6 class="modal-title">Confirmar Exclusão</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
         <div class="modal-body"><p id="delete-message">Tem certeza que deseja excluir?</p></div>
         <div class="modal-footer">
-          <form method="POST">
+          <form method="POST" id="deleteForm">
             <input type="hidden" name="id" id="delete-id">
             <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
             <button type="submit" class="btn btn-danger btn-sm" id="delete-submit">Excluir</button>
@@ -127,26 +127,96 @@ $bairros = $pdo->query("SELECT * FROM bairros ORDER BY nome")->fetchAll(PDO::FET
   <script src="js/theme.js"></script>
   <script src="js/mask-phone.js"></script>
   <script>
-    document.querySelectorAll('.select-item').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        document.getElementById(this.dataset.target).value = this.dataset.value;
-      });
+    function updateSelectAndModal(type, items, modalHtml) {
+      var select = document.getElementById(type);
+      if (select) {
+        var currentVal = select.value;
+        select.innerHTML = '<option value="">Selecione</option>';
+        items.forEach(function(item) {
+          var opt = document.createElement('option');
+          opt.value = item.nome;
+          opt.textContent = item.nome;
+          select.appendChild(opt);
+        });
+        if (currentVal) select.value = currentVal;
+      }
+      var modalMap = {
+        'aparelho': 'modalAparelhos',
+        'marca': 'modalMarcas',
+        'status': 'modalStatus',
+        'bairro': 'modalBairros'
+      };
+      var modalId = modalMap[type];
+      if (modalId && modalHtml) {
+        var oldModal = document.getElementById(modalId);
+        if (oldModal) {
+          var temp = document.createElement('div');
+          temp.innerHTML = modalHtml;
+          var newModal = temp.querySelector('.modal');
+          if (newModal) {
+            oldModal.parentNode.replaceChild(newModal, oldModal);
+          }
+        }
+      }
+    }
+
+    function submitModalForm(form, submitter) {
+      var formData = new FormData(form);
+      formData.append('ajax', '1');
+      if (submitter && submitter.name) {
+        formData.append(submitter.name, submitter.value || '1');
+      }
+      fetch(window.location.href, {
+        method: 'POST',
+        body: formData
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.success) {
+          var modalEl = form.closest('.modal');
+          if (modalEl) {
+            var modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) modal.hide();
+          }
+          updateSelectAndModal(data.type, data.items, data.modalHtml);
+        }
+      })
+      .catch(function() {});
+    }
+
+    document.addEventListener('submit', function(e) {
+      var f = e.target;
+      if (f.id === 'editForm' || f.id === 'deleteForm' || (f.id && f.id.match(/^add/))) {
+        e.preventDefault();
+        submitModalForm(f, e.submitter);
+      }
     });
-    document.querySelectorAll('.edit-item').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        document.getElementById('edit-id').value = this.dataset.id;
-        document.getElementById('edit-nome').value = this.dataset.nome;
-        document.getElementById('edit-submit').name = this.dataset.prefix + '_edit';
+
+    document.addEventListener('click', function(e) {
+      var btn = e.target.closest('.select-item');
+      if (btn) {
+        document.getElementById(btn.dataset.target).value = btn.dataset.value;
+      }
+    });
+
+    document.addEventListener('click', function(e) {
+      var btn = e.target.closest('.edit-item');
+      if (btn) {
+        document.getElementById('edit-id').value = btn.dataset.id;
+        document.getElementById('edit-nome').value = btn.dataset.nome;
+        document.getElementById('edit-submit').name = btn.dataset.prefix + '_edit';
         new bootstrap.Modal(document.getElementById('modalEditar')).show();
-      });
+      }
     });
-    document.querySelectorAll('.delete-item').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        document.getElementById('delete-id').value = this.dataset.id;
-        document.getElementById('delete-submit').name = this.dataset.prefix + '_delete';
-        document.getElementById('delete-message').innerHTML = 'Tem certeza que deseja excluir <strong>' + this.dataset.nome + '</strong>?';
+
+    document.addEventListener('click', function(e) {
+      var btn = e.target.closest('.delete-item');
+      if (btn) {
+        document.getElementById('delete-id').value = btn.dataset.id;
+        document.getElementById('delete-submit').name = btn.dataset.prefix + '_delete';
+        document.getElementById('delete-message').innerHTML = 'Tem certeza que deseja excluir <strong>' + btn.dataset.nome + '</strong>?';
         new bootstrap.Modal(document.getElementById('modalConfirmarExclusao')).show();
-      });
+      }
     });
   </script>
 </body>
