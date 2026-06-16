@@ -29,10 +29,15 @@ $stmt->execute([
 $cliente_id = $pdo->lastInsertId();
 $_SESSION['sucesso_cliente'] = 'Cliente cadastrado com sucesso!';
 
-// If came from OS creation flow, redirect back to OS page with the new client
+// If came from OS creation/edit flow, redirect back with the new client
 $redirect = $_POST['redirect'] ?? 'clientes.php';
 if ($redirect === 'os-nova.php') {
     header("Location: os-nova.php?cliente_id=$cliente_id");
+} elseif (str_starts_with($redirect, 'editar.php')) {
+    $parts = [];
+    parse_str(parse_url($redirect, PHP_URL_QUERY) ?? '', $parts);
+    $os_id = $parts['id'] ?? 0;
+    header("Location: editar.php?id=$os_id&cliente_id=$cliente_id");
 } else {
     header('Location: index.php');
 }
